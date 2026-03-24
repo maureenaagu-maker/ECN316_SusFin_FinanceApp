@@ -254,6 +254,3 @@ with tab3:
         The recommended risky portfolio is the one that maximises this utility. The complete allocation then combines that risky portfolio with the risk-free asset.
         """
     )
-```
-
-Paste this into your `app.py` and redeploy.
