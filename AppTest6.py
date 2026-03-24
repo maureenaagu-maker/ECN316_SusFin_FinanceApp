@@ -462,7 +462,7 @@ with tab1:
             mix4.metric("Optimal risky portfolio ESG score", f"{esg_opt_risky:.2f}")
 
 with tab2:
-    st.subheader("ESG-Efficient Frontier")
+    st.subheader("ESG-Efficient Frontier Visualisation")
 
     fig1, ax1 = plt.subplots(figsize=(10, 6))
 
