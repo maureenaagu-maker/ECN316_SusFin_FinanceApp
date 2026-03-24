@@ -359,10 +359,22 @@ with tab1:
 
     st.markdown("### Portfolio Snapshot")
 
-    snap1, snap2, snap3 = st.columns(3)
-    snap1.metric("Expected return", f"{ret_complete * 100:.2f}%")
-    snap2.metric("Risk level", f"{sd_complete * 100:.2f}%")
-    snap3.metric("Portfolio ESG score", f"{esg_complete:.2f}")
+    st.markdown(f"""
+<div style="display: flex; justify-content: space-between;">
+    <div>
+        <div style="color: white;">Expected return</div>
+        <div style="color: #ff4b4b; font-size: 28px;">{ret_complete*100:.2f}%</div>
+    </div>
+    <div>
+        <div style="color: white;">Risk level</div>
+        <div style="color: #ff4b4b; font-size: 28px;">{sd_complete*100:.2f}%</div>
+    </div>
+    <div>
+        <div style="color: white;">Portfolio ESG score</div>
+        <div style="color: #ff4b4b; font-size: 28px;">{esg_complete:.2f}</div>
+    </div>
+</div>
+""", unsafe_allow_html=True)
 
     if allow_leverage and y > 1:
         st.warning("This recommendation uses borrowing to increase investment exposure.")
