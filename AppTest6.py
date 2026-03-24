@@ -471,10 +471,10 @@ with tab2:
         returns,
         c=esg_scores,
         cmap="YlGn",
-        s=20,
+        s=22,
         alpha=0.9,
         edgecolors="black",
-        linewidths=0.2,
+        linewidths=0.05,
         label="Possible risky portfolios",
     )
 
