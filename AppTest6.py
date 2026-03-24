@@ -401,7 +401,7 @@ with tab1:
         st.markdown(
             f"""
             <div style="{card_style}">
-                <div style="{label_style}">Expected return</div>
+                <div style="{label_style}">Expected Return</div>
                 <div style="{value_style}">{ret_complete * 100:.2f}%</div>
             </div>
             """,
@@ -412,7 +412,7 @@ with tab1:
         st.markdown(
             f"""
             <div style="{card_style}">
-                <div style="{label_style}">Risk level</div>
+                <div style="{label_style}">Risk Level</div>
                 <div style="{value_style}">{sd_complete * 100:.2f}%</div>
             </div>
             """,
@@ -423,7 +423,7 @@ with tab1:
         st.markdown(
             f"""
             <div style="{card_style}">
-                <div style="{label_style}">Portfolio ESG score</div>
+                <div style="{label_style}">Portfolio ESG Score</div>
                 <div style="{value_style}">{esg_complete:.2f}</div>
             </div>
             """,
@@ -438,19 +438,19 @@ with tab1:
         if allow_leverage and y > 1:
             st.warning("This recommendation uses borrowing to increase investment exposure.")
         elif np.isclose(w_rf, 0.0):
-            st.info("This recommendation is fully invested in the two funds.")
+            st.info("This recommendation is FULLY invested in the two funds.")
         elif w_rf > 0:
             st.info("Part of the portfolio remains in the risk-free asset to help reduce volatility.")
 
-        st.markdown("### Why this was recommended")
+        st.markdown("### Recommendation Rationale")
         st.write(explain_portfolio())
 
     with lower_right:
         st.markdown("### Portfolio Balance")
         bal1, bal2, bal3 = st.columns(3)
-        bal1.metric("Return contribution", f"{expected_return_component:.4f}")
-        bal2.metric("Risk adjustment", f"-{risk_penalty_component:.4f}")
-        bal3.metric("ESG contribution", f"{esg_reward_component:.4f}")
+        bal1.metric("Return Contribution", f"{expected_return_component:.4f}")
+        bal2.metric("Risk Adjustment", f"-{risk_penalty_component:.4f}")
+        bal3.metric("ESG Contribution", f"{esg_reward_component:.4f}")
 
         with st.expander("See the underlying risky portfolio mix"):
             mix1, mix2 = st.columns(2)
