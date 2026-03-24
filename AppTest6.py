@@ -364,154 +364,114 @@ with tab1:
 
     st.markdown("### Portfolio Snapshot")
 
-    snap1, snap2, snap3 = st.columns(3)
+snap1, snap2, snap3 = st.columns(3)
 
-    card_style = """
-background: rgba(255,255,255,0.04);
-border: 1px solid rgba(255,255,255,0.08);
-padding: 28px 20px;
-border-radius: 22px;
-box-shadow: 0 6px 18px rgba(0,0,0,0.18);
-min-height: 125px;
-display: flex;
-flex-direction: column;
-justify-content: center;
-align-items: center;
-text-align: center;
-"""
-
-    def snapshot_card(title, value):
-        return f"""
-<div style="{card_style}">
-    <div style="color: white; font-size: 18px; font-weight: 600; margin-bottom: 10px;">
-        {title}
+with snap1:
+    st.markdown(f"""
+    <div style="
+        background: rgba(255,255,255,0.04);
+        border: 1px solid rgba(255,255,255,0.08);
+        padding: 24px 20px;
+        border-radius: 22px;
+        box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+    ">
+        <div style="
+            color: white;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        ">
+            Expected return
+        </div>
+        <div style="
+            color: #ff4b4b;
+            font-size: 34px;
+            font-weight: 700;
+            line-height: 1.1;
+        ">
+            {ret_complete * 100:.2f}%
+        </div>
     </div>
-    <div style="color: #ff4b4b; font-size: 34px; font-weight: 700;">
-        {value}
+    """, unsafe_allow_html=True)
+
+with snap2:
+    st.markdown(f"""
+    <div style="
+        background: rgba(255,255,255,0.04);
+        border: 1px solid rgba(255,255,255,0.08);
+        padding: 24px 20px;
+        border-radius: 22px;
+        box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+    ">
+        <div style="
+            color: white;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        ">
+            Risk level
+        </div>
+        <div style="
+            color: #ff4b4b;
+            font-size: 34px;
+            font-weight: 700;
+            line-height: 1.1;
+        ">
+            {sd_complete * 100:.2f}%
+        </div>
     </div>
-</div>
-"""
+    """, unsafe_allow_html=True)
 
-    with snap1:
-        st.markdown(snapshot_card("Expected return", f"{ret_complete * 100:.2f}%"), unsafe_allow_html=True)
-
-    with snap2:
-        st.markdown(snapshot_card("Risk level", f"{sd_complete * 100:.2f}%"), unsafe_allow_html=True)
-
-    with snap3:
-        st.markdown(snapshot_card("Portfolio ESG score", f"{esg_complete:.2f}"), unsafe_allow_html=True)
+with snap3:
+    st.markdown(f"""
+    <div style="
+        background: rgba(255,255,255,0.04);
+        border: 1px solid rgba(255,255,255,0.08);
+        padding: 24px 20px;
+        border-radius: 22px;
+        box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+    ">
+        <div style="
+            color: white;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        ">
+            Portfolio ESG score
+        </div>
+        <div style="
+            color: #ff4b4b;
+            font-size: 34px;
+            font-weight: 700;
+            line-height: 1.1;
+        ">
+            {esg_complete:.2f}
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
 
     if allow_leverage and y > 1:
-        status_message = "This recommendation uses borrowing to increase investment exposure."
+        st.warning("This recommendation uses borrowing to increase investment exposure.")
     elif np.isclose(w_rf, 0.0):
-        status_message = "This recommendation is fully invested in the two funds."
-    else:
-        status_message = "Part of the portfolio remains in the risk-free asset to help reduce volatility."
+        st.info("This recommendation is fully invested in the two funds.")
+    elif w_rf > 0:
+        st.info("Part of the portfolio remains in the risk-free asset to help reduce volatility.")
 
-    st.markdown(
-        f"""
-<div style="
-    background: #16324f;
-    color: #4da3ff;
-    padding: 14px 16px;
-    border-radius: 12px;
-    font-size: 15px;
-    margin-top: 20px;
-    margin-bottom: 20px;
-">
-    {status_message}
-</div>
-""",
-        unsafe_allow_html=True,
-    )
+    st.markdown("### Why this was recommended")
+    st.write(explain_portfolio())
 
-    left, right = st.columns(2)
+    st.markdown("### Portfolio Balance")
+    bal1, bal2, bal3 = st.columns(3)
+    bal1.metric("Return contribution", f"{expected_return_component:.4f}")
+    bal2.metric("Risk adjustment", f"-{risk_penalty_component:.4f}")
+    bal3.metric("ESG contribution", f"{esg_reward_component:.4f}")
 
-    left_html = f"""
-<html>
-<body style="margin:0; background:transparent; color:white; font-family: sans-serif;">
-    <div style="
-        background: rgba(255,255,255,0.03);
-        border: 1px solid rgba(255,255,255,0.08);
-        padding: 24px;
-        border-radius: 20px;
-        min-height: 300px;
-        box-sizing: border-box;
-    ">
-        <div style="font-size: 26px; font-weight: 700; margin-bottom: 16px;">
-            Why this was recommended
-        </div>
-
-        <div style="color: rgba(255,255,255,0.9); font-size: 16px; line-height: 1.7;">
-            {explain_portfolio().replace("**", "")}
-        </div>
-    </div>
-</body>
-</html>
-"""
-
-    right_html = f"""
-<html>
-<body style="margin:0; background:transparent; color:white; font-family: sans-serif;">
-    <div style="
-        background: rgba(255,255,255,0.03);
-        border: 1px solid rgba(255,255,255,0.08);
-        padding: 24px;
-        border-radius: 20px;
-        min-height: 300px;
-        box-sizing: border-box;
-    ">
-        <div style="font-size: 26px; font-weight: 700; margin-bottom: 20px;">
-            Portfolio Balance
-        </div>
-
-        <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:18px; margin-bottom:26px;">
-            <div>
-                <div style="font-size: 14px; color: rgba(255,255,255,0.85); margin-bottom: 6px;">Return contribution</div>
-                <div style="font-size: 26px; font-weight: 600;">{expected_return_component:.4f}</div>
-            </div>
-            <div>
-                <div style="font-size: 14px; color: rgba(255,255,255,0.85); margin-bottom: 6px;">Risk adjustment</div>
-                <div style="font-size: 26px; font-weight: 600;">-{risk_penalty_component:.4f}</div>
-            </div>
-            <div>
-                <div style="font-size: 14px; color: rgba(255,255,255,0.85); margin-bottom: 6px;">ESG contribution</div>
-                <div style="font-size: 26px; font-weight: 600;">{esg_reward_component:.4f}</div>
-            </div>
-        </div>
-
-        <div style="font-size: 22px; font-weight: 700; margin-bottom: 16px;">
-            Underlying risky portfolio mix
-        </div>
-
-        <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap:20px;">
-            <div>
-                <div style="font-size: 14px; color: rgba(255,255,255,0.85); margin-bottom: 6px;">{asset1_name}</div>
-                <div style="font-size: 24px; font-weight: 600;">{w1_opt_risky * 100:.2f}%</div>
-            </div>
-            <div>
-                <div style="font-size: 14px; color: rgba(255,255,255,0.85); margin-bottom: 6px;">{asset2_name}</div>
-                <div style="font-size: 24px; font-weight: 600;">{w2_opt_risky * 100:.2f}%</div>
-            </div>
-            <div>
-                <div style="font-size: 14px; color: rgba(255,255,255,0.85); margin-bottom: 6px;">Tangency Sharpe</div>
-                <div style="font-size: 24px; font-weight: 600;">{sharpe_tan:.3f}</div>
-            </div>
-            <div>
-                <div style="font-size: 14px; color: rgba(255,255,255,0.85); margin-bottom: 6px;">Optimal ESG</div>
-                <div style="font-size: 24px; font-weight: 600;">{esg_opt_risky:.2f}</div>
-            </div>
-        </div>
-    </div>
-</body>
-</html>
-"""
-
-    with left:
-        components.html(left_html, height=320, scrolling=False)
-
-    with right:
-        components.html(right_html, height=360, scrolling=False)
+    with st.expander("See the underlying risky portfolio mix"):
+        mix1, mix2, mix3, mix4 = st.columns(4)
+        mix1.metric(asset1_name, f"{w1_opt_risky * 100:.2f}%")
+        mix2.metric(asset2_name, f"{w2_opt_risky * 100:.2f}%")
+        mix3.metric("Tangency portfolio Sharpe ratio", f"{sharpe_tan:.3f}")
+        mix4.metric("Optimal risky portfolio ESG score", f"{esg_opt_risky:.2f}")
 
 with tab2:
     st.subheader("ESG-Efficient Frontier")
@@ -630,3 +590,4 @@ The final recommendation is based on the investor profile suggested by your ques
 If you turn on the minimum ESG rule, any portfolio whose average ESG score falls below your chosen threshold is removed.
         """
     )
+
