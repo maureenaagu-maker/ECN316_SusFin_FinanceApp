@@ -1,6 +1,3 @@
-Here’s the full revised code with the weight issue cleaned up, leverage handled more sensibly, and the portfolio ESG score displayed in a bounded, intuitive way.
-
-```python
 import streamlit as st
 import numpy as np
 import matplotlib.pyplot as plt
