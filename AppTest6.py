@@ -433,111 +433,76 @@ elif w_rf > 0:
 lower_left, lower_right = st.columns([1, 1], gap="large")
 
 panel_style = """
-    background: rgba(255,255,255,0.03);
-    border: 1px solid rgba(255,255,255,0.08);
-    padding: 24px;
-    border-radius: 20px;
-    min-height: 340px;
+background: rgba(255,255,255,0.03);
+border: 1px solid rgba(255,255,255,0.08);
+padding: 24px;
+border-radius: 20px;
+min-height: 340px;
 """
 
 with lower_left:
     st.markdown(f"""
-    <div style="{panel_style}">
-        <div style="
-            background: {status_bg};
-            color: #4da3ff;
-            padding: 14px 16px;
-            border-radius: 12px;
-            font-size: 15px;
-            margin-bottom: 22px;
-        ">
-            {status_message}
-        </div>
-
-        <div style="
-            color: white;
-            font-size: 28px;
-            font-weight: 700;
-            margin-bottom: 18px;
-        ">
-            Recommendation Rationale
-        </div>
-
-        <div style="
-            color: rgba(255,255,255,0.92);
-            font-size: 16px;
-            line-height: 1.7;
-        ">
-            {explain_portfolio().replace("**", "")}
-        </div>
+<div style="{panel_style}">
+    <div style="background: {status_bg}; color: #4da3ff; padding: 14px 16px; border-radius: 12px; font-size: 15px; margin-bottom: 22px;">
+        {status_message}
     </div>
-    """, unsafe_allow_html=True)
+
+    <div style="color: white; font-size: 28px; font-weight: 700; margin-bottom: 18px;">
+        Why this was recommended
+    </div>
+
+    <div style="color: rgba(255,255,255,0.92); font-size: 16px; line-height: 1.7;">
+        {explain_portfolio().replace("**", "")}
+    </div>
+</div>
+""", unsafe_allow_html=True)
 
 with lower_right:
     st.markdown(f"""
-    <div style="{panel_style}">
-        <div style="
-            color: white;
-            font-size: 28px;
-            font-weight: 700;
-            margin-bottom: 22px;
-        ">
-            Portfolio Balance
-        </div>
+<div style="{panel_style}">
+    <div style="color: white; font-size: 28px; font-weight: 700; margin-bottom: 22px;">
+        Portfolio Balance
+    </div>
 
-        <div style="
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 18px;
-            margin-bottom: 28px;
-        ">
-            <div>
-                <div style="color: white; font-size: 15px; margin-bottom: 8px;">Return contribution</div>
-                <div style="color: white; font-size: 28px; font-weight: 600;">{expected_return_component:.4f}</div>
-            </div>
-            <div>
-                <div style="color: white; font-size: 15px; margin-bottom: 8px;">Risk adjustment</div>
-                <div style="color: white; font-size: 28px; font-weight: 600;">-{risk_penalty_component:.4f}</div>
-            </div>
-            <div>
-                <div style="color: white; font-size: 15px; margin-bottom: 8px;">ESG contribution</div>
-                <div style="color: white; font-size: 28px; font-weight: 600;">{esg_reward_component:.4f}</div>
-            </div>
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-bottom: 28px;">
+        <div>
+            <div style="color: white; font-size: 15px; margin-bottom: 8px;">Return contribution</div>
+            <div style="color: white; font-size: 28px; font-weight: 600;">{expected_return_component:.4f}</div>
         </div>
-
-        <div style="
-            color: white;
-            font-size: 24px;
-            font-weight: 700;
-            margin-bottom: 18px;
-        ">
-            Underlying risky portfolio mix
+        <div>
+            <div style="color: white; font-size: 15px; margin-bottom: 8px;">Risk adjustment</div>
+            <div style="color: white; font-size: 28px; font-weight: 600;">-{risk_penalty_component:.4f}</div>
         </div>
-
-        <div style="
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 22px 28px;
-        ">
-            <div>
-                <div style="color: white; font-size: 15px; margin-bottom: 8px;">{asset1_name}</div>
-                <div style="color: white; font-size: 28px; font-weight: 600;">{w1_opt_risky * 100:.2f}%</div>
-            </div>
-            <div>
-                <div style="color: white; font-size: 15px; margin-bottom: 8px;">{asset2_name}</div>
-                <div style="color: white; font-size: 28px; font-weight: 600;">{w2_opt_risky * 100:.2f}%</div>
-            </div>
-            <div>
-                <div style="color: white; font-size: 15px; margin-bottom: 8px;">Tangency portfolio Sharpe ratio</div>
-                <div style="color: white; font-size: 28px; font-weight: 600;">{sharpe_tan:.3f}</div>
-            </div>
-            <div>
-                <div style="color: white; font-size: 15px; margin-bottom: 8px;">Optimal risky portfolio ESG score</div>
-                <div style="color: white; font-size: 28px; font-weight: 600;">{esg_opt_risky:.2f}</div>
-            </div>
+        <div>
+            <div style="color: white; font-size: 15px; margin-bottom: 8px;">ESG contribution</div>
+            <div style="color: white; font-size: 28px; font-weight: 600;">{esg_reward_component:.4f}</div>
         </div>
     </div>
-    """, unsafe_allow_html=True)
+
+    <div style="color: white; font-size: 24px; font-weight: 700; margin-bottom: 18px;">
+        Underlying risky portfolio mix
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px 28px;">
+        <div>
+            <div style="color: white; font-size: 15px; margin-bottom: 8px;">{asset1_name}</div>
+            <div style="color: white; font-size: 28px; font-weight: 600;">{w1_opt_risky * 100:.2f}%</div>
+        </div>
+        <div>
+            <div style="color: white; font-size: 15px; margin-bottom: 8px;">{asset2_name}</div>
+            <div style="color: white; font-size: 28px; font-weight: 600;">{w2_opt_risky * 100:.2f}%</div>
+        </div>
+        <div>
+            <div style="color: white; font-size: 15px; margin-bottom: 8px;">Tangency portfolio Sharpe ratio</div>
+            <div style="color: white; font-size: 28px; font-weight: 600;">{sharpe_tan:.3f}</div>
+        </div>
+        <div>
+            <div style="color: white; font-size: 15px; margin-bottom: 8px;">Optimal risky portfolio ESG score</div>
+            <div style="color: white; font-size: 28px; font-weight: 600;">{esg_opt_risky:.2f}</div>
+        </div>
+    </div>
+</div>
+""", unsafe_allow_html=True)
 
 with tab2:
     st.subheader("ESG-Efficient Frontier")
