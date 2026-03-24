@@ -363,43 +363,41 @@ with tab1:
     top2.metric(asset2_name, f"{w2_complete * 100:.2f}%")
     top3.metric("Risk-free asset", f"{w_rf * 100:.2f}%")
 
-    st.markdown("### Portfolio Snapshot")
+st.subheader("Portfolio Snapshot")
 
-    st.markdown(
-        f"""
-        <div style="display: flex; justify-content: space-between; gap: 40px;">
+card_style = """
+background-color:#1c1c1c;
+padding:22px;
+border-radius:16px;
+text-align:center;
+border:1px solid rgba(255,255,255,0.08);
+"""
 
-            <div>
-                <div style="color: white; font-size: 20px; font-weight: 500;">
-                    Expected return
-                </div>
-                <div style="color: #ff4b4b; font-size: 36px; font-weight: 700;">
-                    {ret_complete*100:.2f}%
-                </div>
-            </div>
+col1, col2, col3 = st.columns(3)
 
-            <div>
-                <div style="color: white; font-size: 20px; font-weight: 500;">
-                    Risk level
-                </div>
-                <div style="color: #ff4b4b; font-size: 36px; font-weight: 700;">
-                    {sd_complete*100:.2f}%
-                </div>
-            </div>
+with col1:
+    st.markdown(f"""
+    <div style="{card_style}">
+        <div style="color:white; font-size:20px; font-weight:500;">Expected return</div>
+        <div style="color:#ff4b4b; font-size:36px; font-weight:700;">{portfolio_return:.2f}%</div>
+    </div>
+    """, unsafe_allow_html=True)
 
-            <div>
-                <div style="color: white; font-size: 20px; font-weight: 500;">
-                    Portfolio ESG score
-                </div>
-                <div style="color: #ff4b4b; font-size: 36px; font-weight: 700;">
-                    {esg_complete:.2f}
-                </div>
-            </div>
+with col2:
+    st.markdown(f"""
+    <div style="{card_style}">
+        <div style="color:white; font-size:20px; font-weight:500;">Risk level</div>
+        <div style="color:#ff4b4b; font-size:36px; font-weight:700;">{portfolio_risk:.2f}%</div>
+    </div>
+    """, unsafe_allow_html=True)
 
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
+with col3:
+    st.markdown(f"""
+    <div style="{card_style}">
+        <div style="color:white; font-size:20px; font-weight:500;">Portfolio ESG score</div>
+        <div style="color:#ff4b4b; font-size:36px; font-weight:700;">{portfolio_esg:.2f}</div>
+    </div>
+    """, unsafe_allow_html=True)
 
     if allow_leverage and y > 1:
         st.warning("This recommendation uses borrowing to increase investment exposure.")
