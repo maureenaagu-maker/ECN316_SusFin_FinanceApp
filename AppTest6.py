@@ -385,7 +385,7 @@ with tab1:
 
     label_style = """
         color: white;
-        font-size: 18px;
+        font-size: 20px;
         font-weight: 600;
         margin-bottom: 10px;
     """
@@ -483,7 +483,7 @@ with tab2:
         sd_complete,
         ret_complete,
         color="black",
-        edgecolors="black",
+        edgecolors="red",
         linewidths=0.8,
         s=170,
         marker="X",
@@ -539,7 +539,7 @@ with tab3:
         esg_complete,
         ret_complete,
         color="black",
-        edgecolors="black",
+        edgecolors="red",
         linewidths=0.8,
         s=170,
         marker="X",
