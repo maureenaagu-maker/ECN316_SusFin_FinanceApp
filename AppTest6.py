@@ -7,6 +7,17 @@ st.set_page_config(page_title="Sustainable Portfolio Optimiser", layout="wide")
 st.title("🌱 Sustainable Portfolio Optimiser")
 st.caption("Build a personalised two-asset portfolio using return, risk and sustainability preferences.")
 
+st.markdown("""
+<style>
+[data-testid="stMetricValue"] {
+    color: #ff4b4b !important;
+}
+[data-testid="stMetricDelta"] {
+    color: #ff4b4b !important;
+}
+</style>
+""", unsafe_allow_html=True)
+
 # -----------------------------
 # Questionnaire mapping
 # -----------------------------
