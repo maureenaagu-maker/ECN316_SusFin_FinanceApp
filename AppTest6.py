@@ -9,10 +9,7 @@ st.caption("Build a personalised two-asset portfolio using return, risk and sust
 
 st.markdown("""
 <style>
-[data-testid="stMetricValue"] {
-    color: #ff4b4b !important;
-}
-[data-testid="stMetricDelta"] {
+.snapshot [data-testid="stMetricValue"] {
     color: #ff4b4b !important;
 }
 </style>
@@ -368,12 +365,16 @@ with tab1:
     top2.metric(asset2_name, f"{w2_complete * 100:.2f}%")
     top3.metric("Risk-free asset", f"{w_rf * 100:.2f}%")
 
-    st.markdown("### Portfolio Snapshot")
+    st.markdown('<div class="snapshot">', unsafe_allow_html=True)
 
-    snap1, snap2, snap3 = st.columns(3)
-    snap1.metric("Expected return", f"{ret_complete * 100:.2f}%")
-    snap2.metric("Risk level", f"{sd_complete * 100:.2f}%")
-    snap3.metric("Portfolio ESG score", f"{esg_complete:.2f}")
+st.markdown("### Portfolio Snapshot")
+
+snap1, snap2, snap3 = st.columns(3)
+snap1.metric("Expected return", f"{ret_complete * 100:.2f}%")
+snap2.metric("Risk level", f"{sd_complete * 100:.2f}%")
+snap3.metric("Portfolio ESG score", f"{esg_complete:.2f}")
+
+st.markdown('</div>', unsafe_allow_html=True)
 
     if allow_leverage and y > 1:
         st.warning("This recommendation uses borrowing to increase investment exposure.")
