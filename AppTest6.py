@@ -471,7 +471,7 @@ with tab2:
         returns,
         c=esg_scores,
         cmap="YlGn",
-        s=22,
+        s=23,
         alpha=0.9,
         edgecolors="black",
         linewidths=0.05,
