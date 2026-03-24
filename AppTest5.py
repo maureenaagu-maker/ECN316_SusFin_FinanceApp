@@ -406,7 +406,7 @@ with tab2:
     ax1.scatter(sd2, r2, s=140, marker="o", label=asset2_name)
     ax1.scatter(sd_tan, ret_tan, s=220, marker="*", label="Tangency portfolio")
     ax1.scatter(sd_opt_risky, ret_opt_risky, s=170, marker="D", label="Optimal risky portfolio")
-    ax1.scatter(sd_complete, ret_complete, s=170, marker="X", label="Final recommended portfolio")
+    ax1.scatter(sd_complete, ret_complete, color="black", s=170, marker="X", label="Final recommended portfolio")
     ax1.scatter(0, r_free, s=140, marker="s", label="Risk-free asset")
 
     sd_line = np.linspace(0, max(risks) * 1.2, 100)
@@ -455,7 +455,7 @@ with tab3:
     ax2.scatter(esg1, r1, s=140, marker="o", label=asset1_name)
     ax2.scatter(esg2, r2, s=140, marker="o", label=asset2_name)
     ax2.scatter(esg_opt_risky, ret_opt_risky, s=170, marker="D", label="Optimal risky portfolio")
-    ax2.scatter(esg_complete, ret_complete, s=170, marker="X", label="Final recommended portfolio")
+    ax2.scatter(esg_complete, ret_complete, color="black", s=170, marker="X", label="Final recommended portfolio")
 
     if exclude_low_esg:
         ax2.axvline(esg_floor, linestyle="--", linewidth=2, label=f"Minimum ESG score = {esg_floor}")
