@@ -391,6 +391,7 @@ st.markdown(f"""
 </div>
 """, unsafe_allow_html=True)
 
+
     if allow_leverage and y > 1:
         st.warning("This recommendation uses borrowing to increase investment exposure.")
     elif np.isclose(w_rf, 0.0):
