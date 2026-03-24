@@ -355,7 +355,7 @@ tab1, tab2, tab3, tab4 = st.tabs(
 
 with tab1:
     st.subheader("Your Recommended Portfolio")
-    st.caption("Based on your return, risk and ESG preferences:")
+    st.caption("Based on your return, risk and ESG preferences.")
 
     top1, top2, top3 = st.columns(3)
     top1.metric(asset1_name, f"{w1_complete * 100:.2f}%")
@@ -364,88 +364,90 @@ with tab1:
 
     st.markdown("### Portfolio Snapshot")
 
-snap1, snap2, snap3 = st.columns(3)
+    snap1, snap2, snap3 = st.columns(3)
 
-card_style = """
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(255,255,255,0.08);
-    padding: 28px 20px;
-    border-radius: 22px;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.18);
-    min-height: 125px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-"""
+    card_style = """
+        background: rgba(255,255,255,0.04);
+        border: 1px solid rgba(255,255,255,0.08);
+        padding: 28px 20px;
+        border-radius: 22px;
+        box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+        min-height: 125px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    """
 
-label_style = """
-    color: white;
-    font-size: 18px;
-    font-weight: 600;
-    margin-bottom: 10px;
-"""
+    label_style = """
+        color: white;
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 10px;
+    """
 
-value_style = """
-    color: #ff4b4b;
-    font-size: 34px;
-    font-weight: 700;
-    line-height: 1.1;
-"""
+    value_style = """
+        color: #ff4b4b;
+        font-size: 34px;
+        font-weight: 700;
+        line-height: 1.1;
+    """
 
-with snap1:
-    st.markdown(f"""
-    <div style="{card_style}">
-        <div style="{label_style}">Expected return</div>
-        <div style="{value_style}">{ret_complete * 100:.2f}%</div>
-    </div>
-    """, unsafe_allow_html=True)
+    with snap1:
+        st.markdown(f"""
+        <div style="{card_style}">
+            <div style="{label_style}">Expected return</div>
+            <div style="{value_style}">{ret_complete * 100:.2f}%</div>
+        </div>
+        """, unsafe_allow_html=True)
 
-with snap2:
-    st.markdown(f"""
-    <div style="{card_style}">
-        <div style="{label_style}">Risk level</div>
-        <div style="{value_style}">{sd_complete * 100:.2f}%</div>
-    </div>
-    """, unsafe_allow_html=True)
+    with snap2:
+        st.markdown(f"""
+        <div style="{card_style}">
+            <div style="{label_style}">Risk level</div>
+            <div style="{value_style}">{sd_complete * 100:.2f}%</div>
+        </div>
+        """, unsafe_allow_html=True)
 
-with snap3:
-    st.markdown(f"""
-    <div style="{card_style}">
-        <div style="{label_style}">Portfolio ESG score</div>
-        <div style="{value_style}">{esg_complete:.2f}</div>
-    </div>
-    """, unsafe_allow_html=True)
+    with snap3:
+        st.markdown(f"""
+        <div style="{card_style}">
+            <div style="{label_style}">Portfolio ESG score</div>
+            <div style="{value_style}">{esg_complete:.2f}</div>
+        </div>
+        """, unsafe_allow_html=True)
 
-    lower_left, lower_right = st.columns([1, 1])
+    st.markdown("<div style='margin-top: 18px;'></div>", unsafe_allow_html=True)
 
-with lower_left:
-    if allow_leverage and y > 1:
-        st.warning("This recommendation uses borrowing to increase investment exposure.")
-    elif np.isclose(w_rf, 0.0):
-        st.info("This recommendation is fully invested in the two funds.")
-    elif w_rf > 0:
-        st.info("Part of the portfolio remains in the risk-free asset to help reduce volatility.")
+    lower_left, lower_right = st.columns([1, 1], gap="large")
 
-    st.markdown("### Why this was recommended")
-    st.write(explain_portfolio())
+    with lower_left:
+        if allow_leverage and y > 1:
+            st.warning("This recommendation uses borrowing to increase investment exposure.")
+        elif np.isclose(w_rf, 0.0):
+            st.info("This recommendation is fully invested in the two funds.")
+        elif w_rf > 0:
+            st.info("Part of the portfolio remains in the risk-free asset to help reduce volatility.")
 
-with lower_right:
-    st.markdown("### Portfolio Balance")
-    bal1, bal2, bal3 = st.columns(3)
-    bal1.metric("Return contribution", f"{expected_return_component:.4f}")
-    bal2.metric("Risk adjustment", f"-{risk_penalty_component:.4f}")
-    bal3.metric("ESG contribution", f"{esg_reward_component:.4f}")
+        st.markdown("### Why this was recommended")
+        st.write(explain_portfolio())
 
-    with st.expander("See the underlying risky portfolio mix"):
-        mix1, mix2 = st.columns(2)
-        mix3, mix4 = st.columns(2)
+    with lower_right:
+        st.markdown("### Portfolio Balance")
+        bal1, bal2, bal3 = st.columns(3)
+        bal1.metric("Return contribution", f"{expected_return_component:.4f}")
+        bal2.metric("Risk adjustment", f"-{risk_penalty_component:.4f}")
+        bal3.metric("ESG contribution", f"{esg_reward_component:.4f}")
 
-        mix1.metric(asset1_name, f"{w1_opt_risky * 100:.2f}%")
-        mix2.metric(asset2_name, f"{w2_opt_risky * 100:.2f}%")
-        mix3.metric("Tangency portfolio Sharpe ratio", f"{sharpe_tan:.3f}")
-        mix4.metric("Optimal risky portfolio ESG score", f"{esg_opt_risky:.2f}")
+        with st.expander("See the underlying risky portfolio mix"):
+            mix1, mix2 = st.columns(2)
+            mix3, mix4 = st.columns(2)
+
+            mix1.metric(asset1_name, f"{w1_opt_risky * 100:.2f}%")
+            mix2.metric(asset2_name, f"{w2_opt_risky * 100:.2f}%")
+            mix3.metric("Tangency portfolio Sharpe ratio", f"{sharpe_tan:.3f}")
+            mix4.metric("Optimal risky portfolio ESG score", f"{esg_opt_risky:.2f}")
 
 with tab2:
     st.subheader("ESG-Efficient Frontier")
