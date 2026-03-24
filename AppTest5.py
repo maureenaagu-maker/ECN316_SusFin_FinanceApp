@@ -365,37 +365,41 @@ with tab1:
 
 st.subheader("Portfolio Snapshot")
 
-card_style = """
-background-color:#1c1c1c;
-padding:22px;
-border-radius:16px;
-text-align:center;
-border:1px solid rgba(255,255,255,0.08);
-"""
-
 col1, col2, col3 = st.columns(3)
 
 with col1:
     st.markdown(f"""
-    <div style="{card_style}">
-        <div style="color:white; font-size:20px; font-weight:500;">Expected return</div>
-        <div style="color:#ff4b4b; font-size:36px; font-weight:700;">{portfolio_return:.2f}%</div>
+    <div style="background-color:#1c1c1c; padding:20px; border-radius:15px; text-align:center;">
+        <div style="color:white; font-size:20px; font-weight:500;">
+            Expected return
+        </div>
+        <div style="color:#ff4b4b; font-size:36px; font-weight:700;">
+            {portfolio_return:.2f}%
+        </div>
     </div>
     """, unsafe_allow_html=True)
 
 with col2:
     st.markdown(f"""
-    <div style="{card_style}">
-        <div style="color:white; font-size:20px; font-weight:500;">Risk level</div>
-        <div style="color:#ff4b4b; font-size:36px; font-weight:700;">{portfolio_risk:.2f}%</div>
+    <div style="background-color:#1c1c1c; padding:20px; border-radius:15px; text-align:center;">
+        <div style="color:white; font-size:20px; font-weight:500;">
+            Risk level
+        </div>
+        <div style="color:#ff4b4b; font-size:36px; font-weight:700;">
+            {portfolio_risk:.2f}%
+        </div>
     </div>
     """, unsafe_allow_html=True)
 
 with col3:
     st.markdown(f"""
-    <div style="{card_style}">
-        <div style="color:white; font-size:20px; font-weight:500;">Portfolio ESG score</div>
-        <div style="color:#ff4b4b; font-size:36px; font-weight:700;">{portfolio_esg:.2f}</div>
+    <div style="background-color:#1c1c1c; padding:20px; border-radius:15px; text-align:center;">
+        <div style="color:white; font-size:20px; font-weight:500;">
+            Portfolio ESG score
+        </div>
+        <div style="color:#ff4b4b; font-size:36px; font-weight:700;">
+            {portfolio_esg:.2f}
+        </div>
     </div>
     """, unsafe_allow_html=True)
 
