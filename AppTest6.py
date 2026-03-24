@@ -513,7 +513,7 @@ with tab2:
     )
 
 with tab3:
-    st.subheader("ESG Trade-Off")
+    st.subheader("ESG Trade-Off Visualisation")
 
     fig2, ax2 = plt.subplots(figsize=(10, 6))
 
@@ -579,9 +579,14 @@ This compares all possible portfolios built from two risky assets.
 Each portfolio is assessed using:
 - expected return
 - overall risk
-- ESG score
+- ESG score**
+
+**ESG scores capture risks and externalities that are not fully priced in financial markets, meaning higher ESG assets may offer more stable long-term outcomes.
 
 The final recommendation is based on the investor profile suggested by your questionnaire answers.
+
+The optimal portfolio is chosen by maximising a utility function that balances expected return, risk, and ESG preferences.
+    Utility = Return − λ × Risk + γ × ESG
 
 **Your current investor type:** {persona}  
 **Current risk aversion:** {risk_aversion:.1f}  
