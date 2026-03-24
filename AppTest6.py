@@ -1,8 +1,6 @@
 import streamlit as st
 import numpy as np
 import matplotlib.pyplot as plt
-import streamlit.components.v1 as components
-
 
 st.set_page_config(page_title="Sustainable Portfolio Optimiser", layout="wide")
 
