@@ -359,20 +359,36 @@ with tab1:
 
     st.markdown("### Portfolio Snapshot")
 
-    st.markdown(f"""
-<div style="display: flex; justify-content: space-between;">
-    <div>
-        <div style="color: white;">Expected return</div>
-        <div style="color: #ff4b4b; font-size: 28px;">{ret_complete*100:.2f}%</div>
-    </div>
-    <div>
-        <div style="color: white;">Risk level</div>
-        <div style="color: #ff4b4b; font-size: 28px;">{sd_complete*100:.2f}%</div>
-    </div>
-    <div>
-        <div style="color: white;">Portfolio ESG score</div>
-        <div style="color: #ff4b4b; font-size: 28px;">{esg_complete:.2f}</div>
-    </div>
+   st.markdown(f"""
+<div style="display: flex; justify-content: space-between; gap: 40px;">
+
+    <div>
+        <div style="color: white; font-size: 20px; font-weight: 500;">
+            Expected return
+        </div>
+        <div style="color: #ff4b4b; font-size: 36px; font-weight: 700;">
+            {ret_complete*100:.2f}%
+        </div>
+    </div>
+
+    <div>
+        <div style="color: white; font-size: 20px; font-weight: 500;">
+            Risk level
+        </div>
+        <div style="color: #ff4b4b; font-size: 36px; font-weight: 700;">
+            {sd_complete*100:.2f}%
+        </div>
+    </div>
+
+    <div>
+        <div style="color: white; font-size: 20px; font-weight: 500;">
+            Portfolio ESG score
+        </div>
+        <div style="color: #ff4b4b; font-size: 36px; font-weight: 700;">
+            {esg_complete:.2f}
+        </div>
+    </div>
+
 </div>
 """, unsafe_allow_html=True)
 
