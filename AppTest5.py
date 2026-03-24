@@ -404,7 +404,7 @@ with tab2:
 
     ax1.scatter(sd1, r1, edgecolors="black", linewidths=0.8, s=140, marker="o", label=asset1_name)
     ax1.scatter(sd2, r2, edgecolors="black", linewidths=0.8, s=140, marker="o", label=asset2_name)
-    ax1.scatter(sd_tan, edgecolors="black", linewidths=0.3, ret_tan, s=220, marker="*", label="Tangency Portfolio")
+    ax1.scatter(sd_tan, ret_tan, edgecolors="black", linewidths=0.3, s=220, marker="*", label="Tangency Portfolio")
     ax1.scatter(sd_complete, ret_complete, color="black", edgecolors="black", linewidths=0.8, s=170, marker="X", label="Your optimal portfolio")
     ax1.scatter(0, r_free, s=140, marker="s", label="Risk-free asset")
 
