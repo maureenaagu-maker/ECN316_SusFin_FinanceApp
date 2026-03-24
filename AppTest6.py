@@ -418,36 +418,50 @@ with tab1:
         </div>
         """, unsafe_allow_html=True)
 
-    st.markdown("<div style='margin-top: 18px;'></div>", unsafe_allow_html=True)
+    st.markdown("<div style='margin-top: 22px;'></div>", unsafe_allow_html=True)
 
-    lower_left, lower_right = st.columns([1, 1], gap="large")
+if allow_leverage and y > 1:
+    st.warning("This recommendation uses borrowing to increase investment exposure.")
+elif np.isclose(w_rf, 0.0):
+    st.info("This recommendation is fully invested in the two funds.")
+elif w_rf > 0:
+    st.info("Part of the portfolio remains in the risk-free asset to help reduce volatility.")
 
-    with lower_left:
-        if allow_leverage and y > 1:
-            st.warning("This recommendation uses borrowing to increase investment exposure.")
-        elif np.isclose(w_rf, 0.0):
-            st.info("This recommendation is fully invested in the two funds.")
-        elif w_rf > 0:
-            st.info("Part of the portfolio remains in the risk-free asset to help reduce volatility.")
+lower_left, lower_right = st.columns([1, 1], gap="large")
 
-        st.markdown("### Why this was recommended")
-        st.write(explain_portfolio())
+panel_style = """
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    padding: 22px 22px 18px 22px;
+    border-radius: 20px;
+    min-height: 320px;
+"""
 
-    with lower_right:
-        st.markdown("### Portfolio Balance")
-        bal1, bal2, bal3 = st.columns(3)
-        bal1.metric("Return contribution", f"{expected_return_component:.4f}")
-        bal2.metric("Risk adjustment", f"-{risk_penalty_component:.4f}")
-        bal3.metric("ESG contribution", f"{esg_reward_component:.4f}")
+with lower_left:
+    st.markdown(f'<div style="{panel_style}">', unsafe_allow_html=True)
+    st.markdown("### Why this was recommended")
+    st.write(explain_portfolio())
+    st.markdown("</div>", unsafe_allow_html=True)
 
-        with st.expander("See the underlying risky portfolio mix"):
-            mix1, mix2 = st.columns(2)
-            mix3, mix4 = st.columns(2)
+with lower_right:
+    st.markdown(f'<div style="{panel_style}">', unsafe_allow_html=True)
+    st.markdown("### Portfolio Balance")
 
-            mix1.metric(asset1_name, f"{w1_opt_risky * 100:.2f}%")
-            mix2.metric(asset2_name, f"{w2_opt_risky * 100:.2f}%")
-            mix3.metric("Tangency portfolio Sharpe ratio", f"{sharpe_tan:.3f}")
-            mix4.metric("Optimal risky portfolio ESG score", f"{esg_opt_risky:.2f}")
+    bal1, bal2, bal3 = st.columns(3)
+    bal1.metric("Return contribution", f"{expected_return_component:.4f}")
+    bal2.metric("Risk adjustment", f"-{risk_penalty_component:.4f}")
+    bal3.metric("ESG contribution", f"{esg_reward_component:.4f}")
+
+    st.markdown("#### Underlying risky portfolio mix")
+    mix1, mix2 = st.columns(2)
+    mix3, mix4 = st.columns(2)
+
+    mix1.metric(asset1_name, f"{w1_opt_risky * 100:.2f}%")
+    mix2.metric(asset2_name, f"{w2_opt_risky * 100:.2f}%")
+    mix3.metric("Tangency portfolio Sharpe ratio", f"{sharpe_tan:.3f}")
+    mix4.metric("Optimal risky portfolio ESG score", f"{esg_opt_risky:.2f}")
+
+    st.markdown("</div>", unsafe_allow_html=True)
 
 with tab2:
     st.subheader("ESG-Efficient Frontier")
