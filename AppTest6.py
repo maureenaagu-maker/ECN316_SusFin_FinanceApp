@@ -355,7 +355,7 @@ tab1, tab2, tab3, tab4 = st.tabs(
 
 with tab1:
     st.subheader("Your Recommended Portfolio")
-    st.caption("Based on your return, risk and ESG preferences.")
+    st.caption("Based on your return, risk and ESG preferences:")
 
     top1, top2, top3 = st.columns(3)
     top1.metric(asset1_name, f"{w1_complete * 100:.2f}%")
@@ -418,6 +418,9 @@ with snap3:
     </div>
     """, unsafe_allow_html=True)
 
+    lower_left, lower_right = st.columns([1, 1])
+
+with lower_left:
     if allow_leverage and y > 1:
         st.warning("This recommendation uses borrowing to increase investment exposure.")
     elif np.isclose(w_rf, 0.0):
@@ -428,6 +431,7 @@ with snap3:
     st.markdown("### Why this was recommended")
     st.write(explain_portfolio())
 
+with lower_right:
     st.markdown("### Portfolio Balance")
     bal1, bal2, bal3 = st.columns(3)
     bal1.metric("Return contribution", f"{expected_return_component:.4f}")
@@ -435,7 +439,9 @@ with snap3:
     bal3.metric("ESG contribution", f"{esg_reward_component:.4f}")
 
     with st.expander("See the underlying risky portfolio mix"):
-        mix1, mix2, mix3, mix4 = st.columns(4)
+        mix1, mix2 = st.columns(2)
+        mix3, mix4 = st.columns(2)
+
         mix1.metric(asset1_name, f"{w1_opt_risky * 100:.2f}%")
         mix2.metric(asset2_name, f"{w2_opt_risky * 100:.2f}%")
         mix3.metric("Tangency portfolio Sharpe ratio", f"{sharpe_tan:.3f}")
