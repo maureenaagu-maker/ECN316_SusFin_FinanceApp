@@ -471,8 +471,10 @@ with tab2:
         returns,
         c=esg_scores,
         cmap="YlGn",
-        s=22,
+        s=20,
         alpha=0.9,
+        edgecolors="black",
+        linewidths=0.2,
         label="Possible risky portfolios",
     )
 
@@ -486,7 +488,7 @@ with tab2:
 
     if sd_opt_risky > 0:
         ret_line = r_free + ((ret_opt_risky - r_free) / sd_opt_risky) * sd_line
-        ax1.plot(sd_line, ret_line, linestyle="--", linewidth=2, label="Capital Market Line (CML)", zorder=1)
+        ax1.plot(sd_line, ret_line, linestyle="--", linewidth=1, label="Capital Market Line (CML)", zorder=1)
 
     ax1.set_xlabel("Risk (standard deviation)")
     ax1.set_ylabel("Expected return")
