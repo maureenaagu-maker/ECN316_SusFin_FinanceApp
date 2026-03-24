@@ -402,17 +402,16 @@ with tab2:
         label="Possible risky portfolios"
     )
 
-    ax1.scatter(sd1, r1, s=140, marker="o", label=asset1_name)
-    ax1.scatter(sd2, r2, s=140, marker="o", label=asset2_name)
-    ax1.scatter(sd_tan, ret_tan, s=220, marker="*", label="Tangency portfolio")
-    ax1.scatter(sd_opt_risky, ret_opt_risky, s=170, marker="D", label="Optimal risky portfolio")
-    ax1.scatter(sd_complete, ret_complete, color="black", s=170, marker="X", label="Final recommended portfolio")
+    ax1.scatter(sd1, r1, edgecolors="black", linewidths=0.8, s=140, marker="o", label=asset1_name)
+    ax1.scatter(sd2, r2, edgecolors="black", linewidths=0.8, s=140, marker="o", label=asset2_name)
+    ax1.scatter(sd_tan, edgecolors="black", linewidths=0.8, ret_tan, s=220, marker="*", label="Tangency portfolio")
+    ax1.scatter(sd_complete, ret_complete, color="black", edgecolors="black", linewidths=0.8, s=170, marker="X", label="Your optimal portfolio")
     ax1.scatter(0, r_free, s=140, marker="s", label="Risk-free asset")
 
     sd_line = np.linspace(0, max(risks) * 1.2, 100)
     if sd_opt_risky > 0:
         ret_line = r_free + ((ret_opt_risky - r_free) / sd_opt_risky) * sd_line
-        ax1.plot(sd_line, ret_line, linestyle="--", linewidth=2, label="Allocation line")
+        ax1.plot(sd_line, ret_line, linestyle="--", linewidth=2, label="Capital Market Line (CML)")
 
     ax1.set_xlabel("Risk (standard deviation)")
     ax1.set_ylabel("Expected return")
@@ -429,12 +428,11 @@ with tab2:
         "The final recommendation may sit away from the risky frontier because it can include the risk-free asset."
     )
     st.markdown(
-        "**Marker key:** circles = individual assets, "
-        "star = tangency portfolio, "
-        "diamond = optimal risky portfolio, "
-        "X = final recommended portfolio, "
-        "square = risk-free asset, "
-        "dashed line = allocation line."
+        "**Marker Guide:** circles = Individual assets, "
+        "star = The best risky mix before adding cash, "
+        "X = Your final recommended portfolio, "
+        "square = The risk-free asset, "
+        "dashed line = Capital Market Line showing varying allocations of the risk-free asset and risky investin."
     )
 
 with tab3:
@@ -452,10 +450,9 @@ with tab3:
         label="Possible risky portfolios"
     )
 
-    ax2.scatter(esg1, r1, s=140, marker="o", label=asset1_name)
-    ax2.scatter(esg2, r2, s=140, marker="o", label=asset2_name)
-    ax2.scatter(esg_opt_risky, ret_opt_risky, color="red", s=170, marker="D", label="Optimal risky portfolio")
-    ax2.scatter(esg_complete, ret_complete, color="black", s=170, marker="X", label="Final recommended portfolio")
+    ax2.scatter(esg1, r1, edgecolors="black", linewidths=0.8, s=140, marker="o", label=asset1_name)
+    ax2.scatter(esg2, r2, edgecolors="black", linewidths=0.8, s=140, marker="o", label=asset2_name)
+    ax2.scatter(esg_complete, ret_complete, color="black", edgecolors="black", linewidths=0.8, s=170, marker="X", label="Your optimal portfolio")
 
     if exclude_low_esg:
         ax2.axvline(esg_floor, linestyle="--", linewidth=2, label=f"Minimum ESG score = {esg_floor}")
@@ -476,16 +473,14 @@ with tab3:
 
     if exclude_low_esg:
         st.markdown(
-            "**Marker key:** circles = individual assets, "
-            "diamond = optimal risky portfolio, "
-            "X = final recommended portfolio, "
-            "vertical dashed line = minimum ESG rule."
+            "**Marker Guide:** circles = Individual assets, "
+            "X = Your final recommended portfolio, "
+            "vertical dashed line = The minimum ESG score rule."
         )
     else:
         st.markdown(
-            "**Marker key:** circles = individual assets, "
-            "diamond = optimal risky portfolio, "
-            "X = final recommended portfolio."
+            "**Marker Guide:** circles = Individual assets, "
+            "X = Your final recommended portfolio."
         )
 
 with tab4:
