@@ -7,11 +7,6 @@ st.set_page_config(page_title="Sustainable Portfolio Optimiser", layout="wide")
 st.title("🌱 Sustainable Portfolio Optimiser")
 st.caption("Build a personalised two-asset portfolio using return, risk and sustainability preferences.")
 
-st.markdown("""
-<style>
-</style>
-""", unsafe_allow_html=True)
-
 # -----------------------------
 # Questionnaire mapping
 # -----------------------------
@@ -73,6 +68,7 @@ def get_profile_from_answers(return_goal, risk_feeling, sustainability_priority,
     }
 
     return max(scores, key=scores.get)
+
 
 persona_defaults = {
     "Balanced Investor": {"risk_aversion": 4.0, "esg_preference": 0.03},
@@ -220,24 +216,30 @@ def portfolio_return(w1, r1, r2):
     w2 = 1 - w1
     return w1 * r1 + w2 * r2
 
+
 def portfolio_variance(w1, sd1, sd2, rho):
     w2 = 1 - w1
     return (w1**2) * (sd1**2) + (w2**2) * (sd2**2) + 2 * w1 * w2 * rho * sd1 * sd2
 
+
 def portfolio_sd(w1, sd1, sd2, rho):
     return np.sqrt(np.maximum(portfolio_variance(w1, sd1, sd2, rho), 0))
+
 
 def portfolio_esg(w1, esg1, esg2):
     w2 = 1 - w1
     return w1 * esg1 + w2 * esg2
+
 
 def sharpe_ratio(ret, sd, r_free):
     if sd <= 0:
         return -np.inf
     return (ret - r_free) / sd
 
+
 def utility(ret, sd, esg_score, risk_aversion, esg_preference):
-    return ret - 0.5 * risk_aversion * (sd ** 2) + esg_preference * (esg_score / 100)
+    return ret - 0.5 * risk_aversion * (sd**2) + esg_preference * (esg_score / 100)
+
 
 # -----------------------------
 # Weight grid
@@ -346,6 +348,7 @@ def explain_portfolio():
 
     return text
 
+
 # -----------------------------
 # Tabs
 # -----------------------------
@@ -364,114 +367,99 @@ with tab1:
 
     st.markdown("### Portfolio Snapshot")
 
-snap1, snap2, snap3 = st.columns(3)
+    snap1, snap2, snap3 = st.columns(3)
 
-with snap1:
-    st.markdown(f"""
-    <div style="
+    card_style = """
         background: rgba(255,255,255,0.04);
         border: 1px solid rgba(255,255,255,0.08);
-        padding: 24px 20px;
+        padding: 28px 20px;
         border-radius: 22px;
         box-shadow: 0 6px 18px rgba(0,0,0,0.18);
-    ">
-        <div style="
-            color: white;
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 12px;
-        ">
-            Expected return
-        </div>
-        <div style="
-            color: #ff4b4b;
-            font-size: 34px;
-            font-weight: 700;
-            line-height: 1.1;
-        ">
-            {ret_complete * 100:.2f}%
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
+        min-height: 125px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    """
 
-with snap2:
-    st.markdown(f"""
-    <div style="
-        background: rgba(255,255,255,0.04);
-        border: 1px solid rgba(255,255,255,0.08);
-        padding: 24px 20px;
-        border-radius: 22px;
-        box-shadow: 0 6px 18px rgba(0,0,0,0.18);
-    ">
-        <div style="
-            color: white;
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 12px;
-        ">
-            Risk level
-        </div>
-        <div style="
-            color: #ff4b4b;
-            font-size: 34px;
-            font-weight: 700;
-            line-height: 1.1;
-        ">
-            {sd_complete * 100:.2f}%
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
+    label_style = """
+        color: white;
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 10px;
+    """
 
-with snap3:
-    st.markdown(f"""
-    <div style="
-        background: rgba(255,255,255,0.04);
-        border: 1px solid rgba(255,255,255,0.08);
-        padding: 24px 20px;
-        border-radius: 22px;
-        box-shadow: 0 6px 18px rgba(0,0,0,0.18);
-    ">
-        <div style="
-            color: white;
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 12px;
-        ">
-            Portfolio ESG score
-        </div>
-        <div style="
-            color: #ff4b4b;
-            font-size: 34px;
-            font-weight: 700;
-            line-height: 1.1;
-        ">
-            {esg_complete:.2f}
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
+    value_style = """
+        color: #ff4b4b;
+        font-size: 34px;
+        font-weight: 700;
+        line-height: 1.1;
+    """
 
-    if allow_leverage and y > 1:
-        st.warning("This recommendation uses borrowing to increase investment exposure.")
-    elif np.isclose(w_rf, 0.0):
-        st.info("This recommendation is fully invested in the two funds.")
-    elif w_rf > 0:
-        st.info("Part of the portfolio remains in the risk-free asset to help reduce volatility.")
+    with snap1:
+        st.markdown(
+            f"""
+            <div style="{card_style}">
+                <div style="{label_style}">Expected return</div>
+                <div style="{value_style}">{ret_complete * 100:.2f}%</div>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
 
-    st.markdown("### Why this was recommended")
-    st.write(explain_portfolio())
+    with snap2:
+        st.markdown(
+            f"""
+            <div style="{card_style}">
+                <div style="{label_style}">Risk level</div>
+                <div style="{value_style}">{sd_complete * 100:.2f}%</div>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
 
-    st.markdown("### Portfolio Balance")
-    bal1, bal2, bal3 = st.columns(3)
-    bal1.metric("Return contribution", f"{expected_return_component:.4f}")
-    bal2.metric("Risk adjustment", f"-{risk_penalty_component:.4f}")
-    bal3.metric("ESG contribution", f"{esg_reward_component:.4f}")
+    with snap3:
+        st.markdown(
+            f"""
+            <div style="{card_style}">
+                <div style="{label_style}">Portfolio ESG score</div>
+                <div style="{value_style}">{esg_complete:.2f}</div>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
 
-    with st.expander("See the underlying risky portfolio mix"):
-        mix1, mix2, mix3, mix4 = st.columns(4)
-        mix1.metric(asset1_name, f"{w1_opt_risky * 100:.2f}%")
-        mix2.metric(asset2_name, f"{w2_opt_risky * 100:.2f}%")
-        mix3.metric("Tangency portfolio Sharpe ratio", f"{sharpe_tan:.3f}")
-        mix4.metric("Optimal risky portfolio ESG score", f"{esg_opt_risky:.2f}")
+    st.markdown("")
+
+    lower_left, lower_right = st.columns([1, 1], gap="large")
+
+    with lower_left:
+        if allow_leverage and y > 1:
+            st.warning("This recommendation uses borrowing to increase investment exposure.")
+        elif np.isclose(w_rf, 0.0):
+            st.info("This recommendation is fully invested in the two funds.")
+        elif w_rf > 0:
+            st.info("Part of the portfolio remains in the risk-free asset to help reduce volatility.")
+
+        st.markdown("### Why this was recommended")
+        st.write(explain_portfolio())
+
+    with lower_right:
+        st.markdown("### Portfolio Balance")
+        bal1, bal2, bal3 = st.columns(3)
+        bal1.metric("Return contribution", f"{expected_return_component:.4f}")
+        bal2.metric("Risk adjustment", f"-{risk_penalty_component:.4f}")
+        bal3.metric("ESG contribution", f"{esg_reward_component:.4f}")
+
+        with st.expander("See the underlying risky portfolio mix"):
+            mix1, mix2 = st.columns(2)
+            mix3, mix4 = st.columns(2)
+
+            mix1.metric(asset1_name, f"{w1_opt_risky * 100:.2f}%")
+            mix2.metric(asset2_name, f"{w2_opt_risky * 100:.2f}%")
+            mix3.metric("Tangency portfolio Sharpe ratio", f"{sharpe_tan:.3f}")
+            mix4.metric("Optimal risky portfolio ESG score", f"{esg_opt_risky:.2f}")
 
 with tab2:
     st.subheader("ESG-Efficient Frontier")
@@ -485,13 +473,22 @@ with tab2:
         cmap="YlGn",
         s=22,
         alpha=0.9,
-        label="Possible risky portfolios"
+        label="Possible risky portfolios",
     )
 
     ax1.scatter(sd1, r1, edgecolors="black", linewidths=0.8, s=140, marker="o", label=asset1_name)
     ax1.scatter(sd2, r2, edgecolors="black", linewidths=0.8, s=140, marker="o", label=asset2_name)
     ax1.scatter(sd_tan, ret_tan, edgecolors="black", linewidths=0.3, s=220, marker="*", label="Tangency Portfolio")
-    ax1.scatter(sd_complete, ret_complete, color="black", edgecolors="black", linewidths=0.8, s=170, marker="X", label="Your optimal portfolio")
+    ax1.scatter(
+        sd_complete,
+        ret_complete,
+        color="black",
+        edgecolors="black",
+        linewidths=0.8,
+        s=170,
+        marker="X",
+        label="Your optimal portfolio",
+    )
     ax1.scatter(0, r_free, s=140, marker="s", label="Risk-free asset")
 
     sd_line = np.linspace(0, max(risks) * 1.2, 100)
@@ -533,12 +530,21 @@ with tab3:
         cmap="viridis",
         s=22,
         alpha=0.9,
-        label="Possible risky portfolios"
+        label="Possible risky portfolios",
     )
 
     ax2.scatter(esg1, r1, edgecolors="black", linewidths=0.8, s=140, marker="o", label=asset1_name)
     ax2.scatter(esg2, r2, edgecolors="black", linewidths=0.8, s=140, marker="o", label=asset2_name)
-    ax2.scatter(esg_complete, ret_complete, color="black", edgecolors="black", linewidths=0.8, s=170, marker="X", label="Your optimal portfolio")
+    ax2.scatter(
+        esg_complete,
+        ret_complete,
+        color="black",
+        edgecolors="black",
+        linewidths=0.8,
+        s=170,
+        marker="X",
+        label="Your optimal portfolio",
+    )
 
     if exclude_low_esg:
         ax2.axvline(esg_floor, linestyle="--", linewidth=2, label=f"Minimum ESG score = {esg_floor}")
