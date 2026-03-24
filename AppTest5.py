@@ -54,7 +54,7 @@ def get_profile_from_answers(return_goal, risk_feeling, sustainability_priority,
         score_return += 2
         score_sustainability += 1
 
-    if strict_sustainability == "Yes, avoid lower-sustainability portfolios":
+    if strict_sustainability == "Yes, avoid lower-ESG portfolios":
         score_sustainability += 3
     else:
         score_balanced += 1
@@ -267,6 +267,7 @@ w2_tan = 1 - w1_tan
 
 ret_tan = returns[tangency_idx]
 sd_tan = risks[tangency_idx]
+esg_tan = esg_scores[tangency_idx]
 sharpe_tan = sharpes[tangency_idx]
 
 # -----------------------------
@@ -374,22 +375,21 @@ with tab1:
     st.write(explain_portfolio())
 
     st.markdown("### Portfolio Balance")
-
     bal1, bal2, bal3 = st.columns(3)
     bal1.metric("Return contribution", f"{expected_return_component:.4f}")
     bal2.metric("Risk adjustment", f"-{risk_penalty_component:.4f}")
     bal3.metric("ESG contribution", f"{esg_reward_component:.4f}")
 
     with st.expander("See the underlying risky portfolio mix"):
-        mix1, mix2, mix3 = st.columns(3)
+        mix1, mix2, mix3, mix4 = st.columns(4)
         mix1.metric(asset1_name, f"{w1_opt_risky * 100:.2f}%")
         mix2.metric(asset2_name, f"{w2_opt_risky * 100:.2f}%")
-        mix3.metric("Sharpe ratio", f"{sharpe_tan:.3f}")
+        mix3.metric("Tangency portfolio Sharpe ratio", f"{sharpe_tan:.3f}")
+        mix4.metric("Optimal risky portfolio ESG score", f"{esg_opt_risky:.2f}")
 
 with tab2:
     st.subheader("ESG-Efficient Frontier")
 
-    # risky frontier only
     fig1, ax1 = plt.subplots(figsize=(10, 6))
 
     scatter1 = ax1.scatter(
@@ -404,7 +404,15 @@ with tab2:
 
     ax1.scatter(sd1, r1, s=140, marker="o", label=asset1_name)
     ax1.scatter(sd2, r2, s=140, marker="o", label=asset2_name)
-    ax1.scatter(sd_tan, ret_tan, s=200, marker="*", label="Tangency portfolio")
+    ax1.scatter(sd_tan, ret_tan, s=220, marker="*", label="Tangency portfolio")
+    ax1.scatter(sd_opt_risky, ret_opt_risky, s=170, marker="D", label="Optimal risky portfolio")
+    ax1.scatter(sd_complete, ret_complete, s=170, marker="X", label="Final recommended portfolio")
+    ax1.scatter(0, r_free, s=140, marker="s", label="Risk-free asset")
+
+    sd_line = np.linspace(0, max(risks) * 1.2, 100)
+    if sd_opt_risky > 0:
+        ret_line = r_free + ((ret_opt_risky - r_free) / sd_opt_risky) * sd_line
+        ax1.plot(sd_line, ret_line, linestyle="--", linewidth=2, label="Allocation line")
 
     ax1.set_xlabel("Risk (standard deviation)")
     ax1.set_ylabel("Expected return")
@@ -416,12 +424,17 @@ with tab2:
     cbar1.set_label("Portfolio ESG score")
 
     st.pyplot(fig1)
-    st.caption("This chart shows all possible combinations of the two risky assets. Colour indicates the portfolio’s ESG score.")
-
+    st.caption(
+        "This chart shows all possible risky portfolios formed from the two funds. "
+        "The final recommendation may sit away from the risky frontier because it can include the risk-free asset."
+    )
     st.markdown(
-        "**Marker key:** "
-        "circles = individual assets, "
-        "star = tangency portfolio."
+        "**Marker key:** circles = individual assets, "
+        "star = tangency portfolio, "
+        "diamond = optimal risky portfolio, "
+        "X = final recommended portfolio, "
+        "square = risk-free asset, "
+        "dashed line = allocation line."
     )
 
 with tab3:
@@ -441,6 +454,7 @@ with tab3:
 
     ax2.scatter(esg1, r1, s=140, marker="o", label=asset1_name)
     ax2.scatter(esg2, r2, s=140, marker="o", label=asset2_name)
+    ax2.scatter(esg_opt_risky, ret_opt_risky, s=170, marker="D", label="Optimal risky portfolio")
     ax2.scatter(esg_complete, ret_complete, s=170, marker="X", label="Final recommended portfolio")
 
     if exclude_low_esg:
@@ -456,16 +470,23 @@ with tab3:
     cbar2.set_label("Portfolio risk")
 
     st.pyplot(fig2)
-    st.caption("This chart shows the trade-off between expected return and ESG score across possible risky portfolios.")
-
-    st.markdown(
-        "**Marker key:** "
-        "circles = individual assets, "
-        "X = final recommended portfolio, "
-        "vertical dashed line = minimum ESG rule."
-        if exclude_low_esg
-        else "**Marker key:** circles = individual assets, X = final recommended portfolio."
+    st.caption(
+        "This chart shows the trade-off between expected return and ESG score across possible risky portfolios."
     )
+
+    if exclude_low_esg:
+        st.markdown(
+            "**Marker key:** circles = individual assets, "
+            "diamond = optimal risky portfolio, "
+            "X = final recommended portfolio, "
+            "vertical dashed line = minimum ESG rule."
+        )
+    else:
+        st.markdown(
+            "**Marker key:** circles = individual assets, "
+            "diamond = optimal risky portfolio, "
+            "X = final recommended portfolio."
+        )
 
 with tab4:
     st.subheader("How It Works")
