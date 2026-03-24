@@ -454,7 +454,7 @@ with tab3:
 
     ax2.scatter(esg1, r1, s=140, marker="o", label=asset1_name)
     ax2.scatter(esg2, r2, s=140, marker="o", label=asset2_name)
-    ax2.scatter(esg_opt_risky, ret_opt_risky, s=170, marker="D", label="Optimal risky portfolio")
+    ax2.scatter(esg_opt_risky, ret_opt_risky, color="red", s=170, marker="D", label="Optimal risky portfolio")
     ax2.scatter(esg_complete, ret_complete, color="black", s=170, marker="X", label="Final recommended portfolio")
 
     if exclude_low_esg:
