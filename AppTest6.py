@@ -366,87 +366,55 @@ with tab1:
 
 snap1, snap2, snap3 = st.columns(3)
 
+card_style = """
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    padding: 28px 20px;
+    border-radius: 22px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+    min-height: 125px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+"""
+
+label_style = """
+    color: white;
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 10px;
+"""
+
+value_style = """
+    color: #ff4b4b;
+    font-size: 34px;
+    font-weight: 700;
+    line-height: 1.1;
+"""
+
 with snap1:
     st.markdown(f"""
-    <div style="
-        background: rgba(255,255,255,0.04);
-        border: 1px solid rgba(255,255,255,0.08);
-        padding: 24px 20px;
-        border-radius: 22px;
-        box-shadow: 0 6px 18px rgba(0,0,0,0.18);
-    ">
-        <div style="
-            color: white;
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 12px;
-        ">
-            Expected return
-        </div>
-        <div style="
-            color: #ff4b4b;
-            font-size: 34px;
-            font-weight: 700;
-            line-height: 1.1;
-        ">
-            {ret_complete * 100:.2f}%
-        </div>
+    <div style="{card_style}">
+        <div style="{label_style}">Expected return</div>
+        <div style="{value_style}">{ret_complete * 100:.2f}%</div>
     </div>
     """, unsafe_allow_html=True)
 
 with snap2:
     st.markdown(f"""
-    <div style="
-        background: rgba(255,255,255,0.04);
-        border: 1px solid rgba(255,255,255,0.08);
-        padding: 24px 20px;
-        border-radius: 22px;
-        box-shadow: 0 6px 18px rgba(0,0,0,0.18);
-    ">
-        <div style="
-            color: white;
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 12px;
-        ">
-            Risk level
-        </div>
-        <div style="
-            color: #ff4b4b;
-            font-size: 34px;
-            font-weight: 700;
-            line-height: 1.1;
-        ">
-            {sd_complete * 100:.2f}%
-        </div>
+    <div style="{card_style}">
+        <div style="{label_style}">Risk level</div>
+        <div style="{value_style}">{sd_complete * 100:.2f}%</div>
     </div>
     """, unsafe_allow_html=True)
 
 with snap3:
     st.markdown(f"""
-    <div style="
-        background: rgba(255,255,255,0.04);
-        border: 1px solid rgba(255,255,255,0.08);
-        padding: 24px 20px;
-        border-radius: 22px;
-        box-shadow: 0 6px 18px rgba(0,0,0,0.18);
-    ">
-        <div style="
-            color: white;
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 12px;
-        ">
-            Portfolio ESG score
-        </div>
-        <div style="
-            color: #ff4b4b;
-            font-size: 34px;
-            font-weight: 700;
-            line-height: 1.1;
-        ">
-            {esg_complete:.2f}
-        </div>
+    <div style="{card_style}">
+        <div style="{label_style}">Portfolio ESG score</div>
+        <div style="{value_style}">{esg_complete:.2f}</div>
     </div>
     """, unsafe_allow_html=True)
 
