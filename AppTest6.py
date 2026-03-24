@@ -9,11 +9,20 @@ st.caption("Build a personalised two-asset portfolio using return, risk and sust
 
 st.markdown("""
 <style>
-[data-testid="stMetricValue"] {
-    color: #ff4b4b !important;
+.metric-card {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 18px 20px;
+    border-radius: 22px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
 }
-[data-testid="stMetricDelta"] {
-    color: #ff4b4b !important;
+
+[data-testid="stMetricValue"] {
+    color: #ff4b4b;
+}
+
+[data-testid="stMetricLabel"] {
+    color: white;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -370,10 +379,22 @@ with tab1:
 
     st.markdown("### Portfolio Snapshot")
 
-    snap1, snap2, snap3 = st.columns(3)
-    snap1.metric("Expected return", f"{ret_complete * 100:.2f}%")
-    snap2.metric("Risk level", f"{sd_complete * 100:.2f}%")
-    snap3.metric("Portfolio ESG score", f"{esg_complete:.2f}")
+snap1, snap2, snap3 = st.columns(3)
+
+with snap1:
+    st.markdown('<div class="metric-card">', unsafe_allow_html=True)
+    st.metric("Expected return", f"{ret_complete * 100:.2f}%")
+    st.markdown('</div>', unsafe_allow_html=True)
+
+with snap2:
+    st.markdown('<div class="metric-card">', unsafe_allow_html=True)
+    st.metric("Risk level", f"{sd_complete * 100:.2f}%")
+    st.markdown('</div>', unsafe_allow_html=True)
+
+with snap3:
+    st.markdown('<div class="metric-card">', unsafe_allow_html=True)
+    st.metric("Portfolio ESG score", f"{esg_complete:.2f}")
+    st.markdown('</div>', unsafe_allow_html=True)
 
     if allow_leverage and y > 1:
         st.warning("This recommendation uses borrowing to increase investment exposure.")
