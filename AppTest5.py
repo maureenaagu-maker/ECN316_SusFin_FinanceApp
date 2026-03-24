@@ -350,46 +350,41 @@ tab1, tab2, tab3, tab4 = st.tabs(
 
 with tab1:
     st.subheader("Your Recommended Portfolio")
-    st.caption("Based on your return, risk and ESG preferences.")
-
-    top1, top2, top3 = st.columns(3)
-    top1.metric(asset1_name, f"{w1_complete * 100:.2f}%")
-    top2.metric(asset2_name, f"{w2_complete * 100:.2f}%")
-    top3.metric("Risk-free asset", f"{w_rf * 100:.2f}%")
 
     st.markdown("### Portfolio Snapshot")
-st.markdown(f"""
-<div style="display: flex; justify-content: space-between; gap: 40px;">
 
-    <div>
-        <div style="color: white; font-size: 20px; font-weight: 500;">
-            Expected return
+    st.markdown(f"""
+    <div style="display: flex; justify-content: space-between; gap: 40px;">
+
+        <div>
+            <div style="color: white; font-size: 20px; font-weight: 500;">
+                Expected return
+            </div>
+            <div style="color: #ff4b4b; font-size: 36px; font-weight: 700;">
+                {ret_complete*100:.2f}%
+            </div>
         </div>
-        <div style="color: #ff4b4b; font-size: 36px; font-weight: 700;">
-            {ret_complete*100:.2f}%
+
+        <div>
+            <div style="color: white; font-size: 20px; font-weight: 500;">
+                Risk level
+            </div>
+            <div style="color: #ff4b4b; font-size: 36px; font-weight: 700;">
+                {sd_complete*100:.2f}%
+            </div>
         </div>
+
+        <div>
+            <div style="color: white; font-size: 20px; font-weight: 500;">
+                Portfolio ESG score
+            </div>
+            <div style="color: #ff4b4b; font-size: 36px; font-weight: 700;">
+                {esg_complete:.2f}
+            </div>
+        </div>
+
     </div>
-
-    <div>
-        <div style="color: white; font-size: 20px; font-weight: 500;">
-            Risk level
-        </div>
-        <div style="color: #ff4b4b; font-size: 36px; font-weight: 700;">
-            {sd_complete*100:.2f}%
-        </div>
-    </div>
-
-    <div>
-        <div style="color: white; font-size: 20px; font-weight: 500;">
-            Portfolio ESG score
-        </div>
-        <div style="color: #ff4b4b; font-size: 36px; font-weight: 700;">
-            {esg_complete:.2f}
-        </div>
-    </div>
-
-</div>
-""", unsafe_allow_html=True)
+    """, unsafe_allow_html=True)
 
 
     if allow_leverage and y > 1:
