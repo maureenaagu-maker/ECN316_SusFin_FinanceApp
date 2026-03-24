@@ -452,7 +452,7 @@ with tab1:
         bal2.metric("Risk Adjustment", f"-{risk_penalty_component:.4f}")
         bal3.metric("ESG Contribution", f"{esg_reward_component:.4f}")
 
-        with st.expander("See the underlying risky portfolio mix"):
+        with st.expander("See the underlying risky portfolio composition"):
             mix1, mix2 = st.columns(2)
             mix3, mix4 = st.columns(2)
 
@@ -506,7 +506,7 @@ with tab2:
     )
     st.markdown(
         "**Marker Guide:** circles = Individual assets, "
-        "star = The best risky mix before adding cash, "
+        "star = The best risky composition before adding cash, "
         "X = Your final recommended portfolio, "
         "square = The risk-free asset, "
         "dashed line = Capital Market Line showing varying allocations of the risk-free asset and risky investin."
