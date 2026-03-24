@@ -476,60 +476,17 @@ with tab2:
         label="Possible risky portfolios",
     )
 
-    ax1.scatter(
-    sd1, r1,
-    edgecolors="black",
-    linewidths=0.8,
-    s=140,
-    marker="o",
-    label=asset1_name,
-    zorder=3
-)
-
-ax1.scatter(
-    sd2, r2,
-    edgecolors="black",
-    linewidths=0.8,
-    s=140,
-    marker="o",
-    label=asset2_name,
-    zorder=3
-)
-
-ax1.scatter(
-    sd_tan, ret_tan,
-    edgecolors="black",
-    linewidths=0.8,
-    s=220,
-    marker="*",
-    label="Tangency Portfolio",
-    zorder=5
-)
-
-ax1.scatter(
-    sd_complete,
-    ret_complete,
-    color="black",
-    edgecolors="red",
-    linewidths=0.8,
-    s=170,
-    marker="X",
-    label="Your optimal portfolio",
-    zorder=6
-)
-
-ax1.scatter(
-    0, r_free,
-    s=140,
-    marker="s",
-    label="Risk-free asset",
-    zorder=4
-)
+    ax1.scatter(sd1, r1, edgecolors="black", linewidths=0.8, s=140, marker="o", label=asset1_name, zorder=3)
+    ax1.scatter(sd2, r2, edgecolors="black", linewidths=0.8, s=140, marker="o", label=asset2_name, zorder=3)
+    ax1.scatter(sd_tan, ret_tan, edgecolors="black", linewidths=0.8, s=220, marker="*", label="Tangency Portfolio", zorder=5)
+    ax1.scatter(sd_complete, ret_complete, color="black", edgecolors="red", linewidths=0.8, s=170, marker="X", label="Your optimal portfolio", zorder=6)
+    ax1.scatter(0, r_free, s=140, marker="s", label="Risk-free asset", zorder=4)
 
     sd_line = np.linspace(0, max(risks) * 1.2, 100)
+
     if sd_opt_risky > 0:
         ret_line = r_free + ((ret_opt_risky - r_free) / sd_opt_risky) * sd_line
-        ax1.plot(sd_line, ret_line, linestyle="--", linewidth=2, label="Capital Market Line (CML)")
+        ax1.plot(sd_line, ret_line, linestyle="--", linewidth=2, label="Capital Market Line (CML)", zorder=1)
 
     ax1.set_xlabel("Risk (standard deviation)")
     ax1.set_ylabel("Expected return")
