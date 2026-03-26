@@ -2,9 +2,15 @@ import streamlit as st
 import numpy as np
 import matplotlib.pyplot as plt
 
-st.set_page_config(page_title="Sustainable Portfolio Optimiser", layout="wide")
+st.set_page_config(page_title="MyGreenPortfolio", layout="wide")
 
-st.title("🌱 Sustainable Portfolio Optimiser")
+st.markdown("<h1 style='margin-bottom:0;'>🌱 MyGreenPortfolio</h1>", unsafe_allow_html=True)
+
+st.markdown(
+    "<p style='font-size:17px; margin-top:0; color:#A0A0A0;'>Sustainable Portfolio Optimiser</p>",
+    unsafe_allow_html=True
+)
+
 st.caption("Build a personalised two-asset portfolio using return, risk, sustainability and climate preferences.")
 
 # ------------------------------------------------------------
