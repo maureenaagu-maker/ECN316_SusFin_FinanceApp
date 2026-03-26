@@ -679,7 +679,8 @@ with tab1:
     with composition_right:
         st.markdown("### Composition Chart")
 
-        fig_pie, ax_pie = plt.subplots(figsize=(4.2, 4.2))
+        fig_pie, ax_pie = plt.subplots(figsize=(4.8, 4.8), facecolor="none")
+        ax_pie.set_facecolor("none")
 
         if w_rf >= 0:
             pie_labels = [asset1_name, asset2_name, "Risk-free Asset"]
@@ -688,19 +689,83 @@ with tab1:
             pie_labels = [asset1_name, asset2_name]
             pie_sizes = [max(w1_complete, 0), max(w2_complete, 0)]
 
-        ax_pie.pie(
+        pie_colors = ["#2E8B57", "#FF6B35", "#4DA3FF"]
+
+        def autopct_format(pct):
+            return f"{pct:.1f}%" if pct >= 4 else ""
+
+        wedges, texts, autotexts = ax_pie.pie(
             pie_sizes,
-            labels=pie_labels,
-            autopct="%1.1f%%",
+            labels=None,
+            colors=pie_colors[:len(pie_sizes)],
             startangle=90,
-            wedgeprops={"edgecolor": "white", "linewidth": 1},
-            textprops={"fontsize": 9},
+            counterclock=False,
+            autopct=autopct_format,
+            pctdistance=0.72,
+            wedgeprops={"width": 0.42, "edgecolor": "#0E1117", "linewidth": 2},
+            textprops={"color": "white", "fontsize": 10, "fontweight": "bold"},
         )
+
+        centre_circle = plt.Circle((0, 0), 0.42, fc="#0E1117")
+        ax_pie.add_artist(centre_circle)
+
+        ax_pie.text(
+            0,
+            0.08,
+            "Portfolio",
+            ha="center",
+            va="center",
+            color="white",
+            fontsize=12,
+            fontweight="semibold",
+        )
+        ax_pie.text(
+            0,
+            -0.08,
+            "Mix",
+            ha="center",
+            va="center",
+            color="#A0A0A0",
+            fontsize=11,
+        )
+
+        for autotext in autotexts:
+            autotext.set_color("white")
+            autotext.set_fontsize(11)
+            autotext.set_fontweight("bold")
+
         ax_pie.axis("equal")
-        st.pyplot(fig_pie)
+        fig_pie.patch.set_alpha(0)
+
+        st.pyplot(fig_pie, transparent=True)
+
+        legend_labels = [f"{label}: {size * 100:.2f}%" for label, size in zip(pie_labels, pie_sizes)]
+        for i, label in enumerate(legend_labels):
+            st.markdown(
+                f"""
+                <div style="
+                    display:flex;
+                    align-items:center;
+                    margin-bottom:8px;
+                    font-size:14px;
+                    color:white;
+                ">
+                    <div style="
+                        width:12px;
+                        height:12px;
+                        border-radius:50%;
+                        background-color:{pie_colors[i]};
+                        margin-right:10px;
+                        flex-shrink:0;
+                    "></div>
+                    <div>{label}</div>
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
 
         if w_rf < 0:
-            st.caption("Borrowing is not displayed in the pie chart.")
+            st.caption("Borrowing is not displayed in the composition chart.")
 
     st.markdown("### Portfolio Snapshot")
 
