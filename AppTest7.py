@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 st.set_page_config(page_title="Sustainable Portfolio Optimiser", layout="wide")
 
 st.title("🌱 Sustainable Portfolio Optimiser")
-st.caption("Build a personalised two-asset portfolio using return, risk, sustainability, and climate preferences.")
+st.caption("Build a personalised two-asset portfolio using return, risk, sustainability and climate preferences.")
 
 # ------------------------------------------------------------
 # Styling
@@ -99,10 +99,10 @@ persona_defaults = {
 }
 
 persona_descriptions = {
-    "Balanced Investor": "Prefers a measured balance between growth, risk control, and sustainability.",
+    "Balanced Investor": "Prefers a measured balance between growth, risk control and sustainability.",
     "Sustainability-Focused Investor": "Places strong value on sustainable outcomes and accepts lower returns for higher ESG quality.",
     "Return-Seeking Investor": "Prioritises performance and tolerates more volatility to pursue stronger returns.",
-    "Low-Risk Investor": "Prefers capital stability, lower volatility, and cautious overall exposure.",
+    "Low-Risk Investor": "Prefers capital stability, lower volatility and cautious overall exposure.",
 }
 
 # ------------------------------------------------------------
@@ -513,7 +513,7 @@ def explain_portfolio():
         f"The recommendation leans most heavily toward **{lead_asset}**. "
         f"Under the selected sustainability lens, **{stronger_sus_asset}** has the stronger sustainability profile, "
         f"while **{higher_return_asset}** offers the higher climate-adjusted expected return. "
-        f"The optimiser combines your risk tolerance with your sustainability preference to locate the most suitable risky mix."
+        f"The optimiser combines your risk tolerance with your sustainability preference to find the most suitable risky composition."
     )
 
     if exclude_low_esg:
@@ -523,7 +523,7 @@ def explain_portfolio():
         text += " Exclusion rules are active, so ineligible assets or portfolio mixes are removed from consideration."
 
     if use_climate_overlay:
-        text += " Expected returns are being adjusted for physical risk, transition risk, and carbon intensity."
+        text += " Expected returns are being adjusted for physical risk, transition risk and carbon intensity."
 
     if y < 1:
         text += " Part of the allocation remains in the risk-free asset to reduce overall volatility."
@@ -547,8 +547,8 @@ def why_not_alternative():
     )
 
     text += (
-        f" Relative to the maximum-Sharpe solution, your recommendation changes expected return by **{-ret_gap:.2f} percentage points**, "
-        f"changes risk by **{-risk_gap:.2f} percentage points**, and changes sustainability by **{-sus_gap:.2f} points**."
+        f" Relative to the maximum-Sharpe solution, your recommendation changes expected return by **{-ret_gap:.2f} %**, "
+        f"changes risk by **{-risk_gap:.2f} %** and changes sustainability by **{-sus_gap:.2f} points**."
     )
 
     return text
@@ -614,7 +614,7 @@ tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(
 # ------------------------------------------------------------
 with tab1:
     st.subheader("Your Recommended Portfolio")
-    st.caption("Built from your profile, climate settings, sustainability lens, and portfolio rules.")
+    st.caption("Built from your profile, climate settings, sustainability lens and portfolio rules.")
 
     top1, top2, top3 = st.columns(3)
     top1.metric(asset1_name, f"{w1_complete * 100:.2f}%")
@@ -651,7 +651,7 @@ with tab1:
         st.markdown(
             f"""
             <div style="{card_style}">
-                <div style="{label_style}">Sustainability Score</div>
+                <div style="{label_style}">ESG Score</div>
                 <div style="{value_style}">{sus_complete:.2f}</div>
             </div>
             """,
@@ -663,7 +663,7 @@ with tab1:
 
     with left_col:
         if allow_leverage and y > 1:
-            st.warning("This recommendation uses borrowing to increase risky exposure.")
+            st.warning("This recommendation uses BORROWING to increase risky exposure.")
         elif np.isclose(w_rf, 0.0):
             st.info("This recommendation is fully invested in the risky assets.")
         elif w_rf > 0:
@@ -856,7 +856,7 @@ with tab3:
 # ------------------------------------------------------------
 with tab4:
     st.subheader("Investor Dashboard")
-    st.caption("A product-style summary of how the app interprets your preferences.")
+    st.caption("A summary of how the app interprets your preferences.")
 
     dash1, dash2, dash3 = st.columns(3)
 
@@ -1052,7 +1052,7 @@ The app then layers in additional sustainable-finance features:
 
 - **Sustainability methodology mode** changes how sustainability is interpreted  
 - **Controversy penalty** reduces scores for assets with weaker controversy profiles  
-- **Climate overlay** can reduce expected return for assets with higher physical risk, transition risk, and carbon intensity  
+- **Climate overlay** can reduce expected return for assets with higher physical risk, transition risk and carbon intensity  
 - **Exclusion screen** removes assets that fail ethical or controversy rules  
 - **Minimum sustainability rule** removes portfolio mixes below your chosen threshold  
 
