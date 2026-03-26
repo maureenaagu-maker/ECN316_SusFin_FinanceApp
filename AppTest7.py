@@ -553,8 +553,8 @@ def why_not_alternative():
     )
 
     text += (
-        f" Relative to the maximum-Sharpe solution, your recommendation changes expected return by **{-ret_gap:.2f} %**, "
-        f"changes risk by **{-risk_gap:.2f} %** and changes sustainability by **{-sus_gap:.2f} points**."
+        f" Relative to the maximum-Sharpe solution, your recommendation changes expected return by **{-ret_gap:.2f}%**, "
+        f"changes risk by **{-risk_gap:.2f}%** and changes sustainability by **{-sus_gap:.2f} points**."
     )
 
     return text
