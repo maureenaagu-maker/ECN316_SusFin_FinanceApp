@@ -651,27 +651,56 @@ with tab1:
     st.markdown("## Your Recommended Portfolio Composition")
     st.caption("Your investment is optimally split between risky assets and a risk-free asset, based on your risk and sustainability preferences.")
 
-    top1, top2, top3 = st.columns(3)
+    composition_left, composition_right = st.columns([2.2, 1.0], gap="large")
 
-    top1.markdown(
-        allocation_block(asset1_name, f"{w1_complete * 100:.2f}%"),
-        unsafe_allow_html=True
-    )
-    top2.markdown(
-        allocation_block(asset2_name, f"{w2_complete * 100:.2f}%"),
-        unsafe_allow_html=True
-    )
+    with composition_left:
+        top1, top2, top3 = st.columns(3)
 
-    if w_rf >= 0:
-        top3.markdown(
-            allocation_block("Risk-free Asset", f"{w_rf * 100:.2f}%"),
+        top1.markdown(
+            allocation_block(asset1_name, f"{w1_complete * 100:.2f}%"),
             unsafe_allow_html=True
         )
-    else:
-        top3.markdown(
-            allocation_block("Borrowing", f"{abs(w_rf) * 100:.2f}%"),
+        top2.markdown(
+            allocation_block(asset2_name, f"{w2_complete * 100:.2f}%"),
             unsafe_allow_html=True
         )
+
+        if w_rf >= 0:
+            top3.markdown(
+                allocation_block("Risk-free Asset", f"{w_rf * 100:.2f}%"),
+                unsafe_allow_html=True
+            )
+        else:
+            top3.markdown(
+                allocation_block("Borrowing", f"{abs(w_rf) * 100:.2f}%"),
+                unsafe_allow_html=True
+            )
+
+    with composition_right:
+        st.markdown("### Composition Chart")
+
+        fig_pie, ax_pie = plt.subplots(figsize=(4.2, 4.2))
+
+        if w_rf >= 0:
+            pie_labels = [asset1_name, asset2_name, "Risk-free Asset"]
+            pie_sizes = [max(w1_complete, 0), max(w2_complete, 0), max(w_rf, 0)]
+        else:
+            pie_labels = [asset1_name, asset2_name]
+            pie_sizes = [max(w1_complete, 0), max(w2_complete, 0)]
+
+        ax_pie.pie(
+            pie_sizes,
+            labels=pie_labels,
+            autopct="%1.1f%%",
+            startangle=90,
+            wedgeprops={"edgecolor": "white", "linewidth": 1},
+            textprops={"fontsize": 9},
+        )
+        ax_pie.axis("equal")
+        st.pyplot(fig_pie)
+
+        if w_rf < 0:
+            st.caption("Borrowing is not displayed in the pie chart.")
 
     st.markdown("### Portfolio Snapshot")
 
