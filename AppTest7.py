@@ -693,7 +693,7 @@ with tab1:
         st.write(why_not_alternative())
 
     with right_col:
-        st.markdown("### Utility Decomposition")
+        st.markdown("### Your Utility Break Down")
         util1, util2, util3 = st.columns(3)
         util1.metric("Return term", f"{expected_return_component:.4f}")
         util2.metric("Risk penalty", f"-{risk_penalty_component:.4f}")
