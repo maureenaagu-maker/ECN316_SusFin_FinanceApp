@@ -767,6 +767,7 @@ with tab1:
         if w_rf < 0:
             st.caption("Borrowing is not displayed in the composition chart.")
 
+    
     st.markdown("### Portfolio Snapshot")
 
     snap1, snap2, snap3 = st.columns(3)
