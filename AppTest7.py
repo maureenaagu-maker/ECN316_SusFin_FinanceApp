@@ -620,7 +620,7 @@ tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(
 # ------------------------------------------------------------
 with tab1:
     st.subheader("Your Recommended Portfolio")
-    st.caption("Your total investment is optimally allocated between risky assets and a risk-free asset, based on your risk and sustainability preferences.")
+    st.caption("Your investment is optimally split between risky assets and a risk-free asset, based on your risk and sustainability preferences.")
 
     st.markdown("### Recommended Allocation Split")
 
@@ -669,6 +669,8 @@ with tab1:
             """,
             unsafe_allow_html=True,
         )
+        
+        st.caption("Higher scores reflect stronger sustainability performance based on your selected ESG lens.")
 
     st.markdown("")
     left_col, right_col = st.columns([1.05, 0.95], gap="large")
