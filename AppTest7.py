@@ -97,6 +97,18 @@ def get_profile_from_answers(return_goal, risk_feeling, sustainability_priority,
     return max(scores, key=scores.get)
 
 
+def get_profile_from_preferences(risk_aversion, esg_preference):
+    if esg_preference >= 0.055:
+        return "Sustainability-Focused Investor"
+    elif risk_aversion >= 7.0:
+        return "Low-Risk Investor"
+    elif risk_aversion <= 2.5 and esg_preference <= 0.02:
+        return "Return-Seeking Investor"
+    else:
+        return "Balanced Investor"
+
+display_persona = get_profile_from_preferences(risk_aversion, esg_preference) if use_manual_preferences else persona
+
 persona_defaults = {
     "Balanced Investor": {"risk_aversion": 4.0, "esg_preference": 0.03},
     "Sustainability-Focused Investor": {"risk_aversion": 5.5, "esg_preference": 0.07},
@@ -204,7 +216,6 @@ else:
         f"{persona}\n\nRisk Aversion: {risk_aversion:.1f}\n\nESG Preference: {esg_preference:.3f}"
     )
 
-display_persona = get_profile_from_preferences(risk_aversion, esg_preference) if use_manual_preferences else persona
 
 st.sidebar.header("Sustainability Method")
 esg_method = st.sidebar.selectbox(
@@ -305,16 +316,6 @@ climate_weight = st.sidebar.slider(
 # ------------------------------------------------------------
 # Helper functions
 # ------------------------------------------------------------
-def get_profile_from_preferences(risk_aversion, esg_preference):
-    if esg_preference >= 0.055:
-        return "Sustainability-Focused Investor"
-    elif risk_aversion >= 7.0:
-        return "Low-Risk Investor"
-    elif risk_aversion <= 2.5 and esg_preference <= 0.02:
-        return "Return-Seeking Investor"
-    else:
-        return "Balanced Investor"
-
 def portfolio_return(w1, r1_used, r2_used):
     w2 = 1 - w1
     return w1 * r1_used + w2 * r2_used
