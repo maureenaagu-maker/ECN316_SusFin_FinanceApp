@@ -592,7 +592,7 @@ card_style = """
     padding: 20px 16px;
     border-radius: 20px;
     box-shadow: 0 6px 18px rgba(0,0,0,0.18);
-    min-height: 100px;
+    min-height: 80px;
     display: flex;
     flex-direction: column;
     justify-content: center;
