@@ -625,7 +625,11 @@ with tab1:
     top1, top2, top3 = st.columns(3)
     top1.metric(asset1_name, f"{w1_complete * 100:.2f}%")
     top2.metric(asset2_name, f"{w2_complete * 100:.2f}%")
-    top3.metric("Risk-free asset", f"{w_rf * 100:.2f}%")
+
+    if w_rf >= 0:
+        top3.metric("Risk-free Asset", f"{w_rf * 100:.2f}%")
+    else:
+        top3.metric("Borrowing", f"{abs(w_rf) * 100:.2f}%")
 
     st.markdown("### Portfolio Snapshot")
 
