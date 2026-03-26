@@ -619,7 +619,7 @@ tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(
 # TAB 1
 # ------------------------------------------------------------
 with tab1:
-    st.subheader("Your Recommended Portfolio Composition")
+    st.markdown("## Your Recommended Portfolio Composition")
     st.caption("Your investment is optimally split between risky assets and a risk-free asset, based on your risk and sustainability preferences.")
 
     top1, top2, top3 = st.columns(3)
@@ -631,7 +631,7 @@ with tab1:
     else:
         top3.metric("Borrowing", f"{abs(w_rf) * 100:.2f}%")
 
-    st.markdown("## Portfolio Snapshot")
+    st.markdown("### Portfolio Snapshot")
 
     snap1, snap2, snap3 = st.columns(3)
 
