@@ -788,19 +788,6 @@ with tab2:
         ret_line = r_free + ((ret_opt_risky - r_free) / sd_opt_risky) * sd_line
         ax1.plot(sd_line, ret_line, linestyle="--", linewidth=1.0, label="Capital allocation line", zorder=1)
 
-    ax1.annotate(
-        f"Recommended ({profile_label_from_persona(persona)})",
-        xy=(sd_complete, ret_complete),
-        xytext=(sd_complete + 0.005, ret_complete + 0.005),
-        fontsize=9,
-    )
-    ax1.annotate(
-        f"Tangency\nSharpe {sharpe_tan:.2f}",
-        xy=(sd_tan, ret_tan),
-        xytext=(sd_tan + 0.005, ret_tan + 0.005),
-        fontsize=9,
-    )
-
     ax1.set_xlabel("Risk (standard deviation)")
     ax1.set_ylabel("Expected return")
     ax1.set_title("Risk-Return Frontier Coloured by Sustainability Score")
