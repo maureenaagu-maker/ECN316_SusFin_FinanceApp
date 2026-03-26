@@ -623,13 +623,25 @@ with tab1:
     st.caption("Your investment is optimally split between risky assets and a risk-free asset, based on your risk and sustainability preferences.")
 
     top1, top2, top3 = st.columns(3)
-    top1.metric(asset1_name, f"{w1_complete * 100:.2f}%")
-    top2.metric(asset2_name, f"{w2_complete * 100:.2f}%")
+    def allocation_block(title, value):
+        return f"""
+        <div style="text-align: center;">
+			<div style="color: #A0A0A0; font-size:16px; margin-bottom:8px;">
+            	{title}
+        	</div>
+        	<div style="color: white; font-size:48px; font-weight:700;">
+            	{value}
+        	</div>
+    	</div>
+    	"""
 
-    if w_rf >= 0:
-        top3.metric("Risk-free Asset", f"{w_rf * 100:.2f}%")
-    else:
-        top3.metric("Borrowing", f"{abs(w_rf) * 100:.2f}%")
+	top1.markdown(allocation_block(asset1_name, f"{w1_complete * 100:.2f}%"), unsafe_allow_html=True)
+	top2.markdown(allocation_block(asset2_name, f"{w2_complete * 100:.2f}%"), unsafe_allow_html=True)
+
+	if w_rf >= 0:
+    	top3.markdown(allocation_block("Risk-free Asset", f"{w_rf * 100:.2f}%"), unsafe_allow_html=True)
+	else:
+    	top3.markdown(allocation_block("Borrowing", f"{abs(w_rf) * 100:.2f}%"), unsafe_allow_html=True)
 
     st.markdown("### Portfolio Snapshot")
 
