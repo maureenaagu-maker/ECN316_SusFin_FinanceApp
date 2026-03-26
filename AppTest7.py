@@ -352,8 +352,6 @@ def adjusted_sustainability_score(base_esg, controversy_score, carbon_intensity,
         score = 0.85 * score + 0.15 * (100 - controversy_score)
     elif method == "Impact-Focused":
         score = score + 10
-    else:
-        score = score
 
     return float(np.clip(score, 0, 100))
 
@@ -363,8 +361,16 @@ def utility(ret, sd, sustainability_score, risk_aversion_used, esg_preference_us
 
 
 def asset_is_excluded(
-    fossil_flag, tobacco_flag, gambling_flag, controversy_score,
-    apply_screen, fossil_rule, tobacco_rule, gambling_rule, controversy_rule, controversy_cutoff
+    fossil_flag,
+    tobacco_flag,
+    gambling_flag,
+    controversy_score,
+    apply_screen,
+    fossil_rule,
+    tobacco_rule,
+    gambling_rule,
+    controversy_rule,
+    controversy_cutoff,
 ):
     if not apply_screen:
         return False
@@ -391,6 +397,18 @@ def profile_label_from_persona(persona_name):
     return "Defensive"
 
 
+def allocation_block(title, value):
+    return f"""
+    <div style="text-align:center; padding-top: 6px; padding-bottom: 6px;">
+        <div style="color:white; font-size:16px; font-weight:600; margin-bottom:8px;">
+            {title}
+        </div>
+        <div style="color:white; font-size:48px; font-weight:700; line-height:1.1;">
+            {value}
+        </div>
+    </div>
+    """
+
 # ------------------------------------------------------------
 # Adjusted asset inputs
 # ------------------------------------------------------------
@@ -405,15 +423,29 @@ else:
     r2_used = r2
 
 asset1_excluded = asset_is_excluded(
-    asset1_fossil, asset1_tobacco, asset1_gambling, controversy1,
-    apply_exclusions, exclude_fossil, exclude_tobacco, exclude_gambling,
-    exclude_severe_controversy, severe_controversy_cutoff
+    asset1_fossil,
+    asset1_tobacco,
+    asset1_gambling,
+    controversy1,
+    apply_exclusions,
+    exclude_fossil,
+    exclude_tobacco,
+    exclude_gambling,
+    exclude_severe_controversy,
+    severe_controversy_cutoff,
 )
 
 asset2_excluded = asset_is_excluded(
-    asset2_fossil, asset2_tobacco, asset2_gambling, controversy2,
-    apply_exclusions, exclude_fossil, exclude_tobacco, exclude_gambling,
-    exclude_severe_controversy, severe_controversy_cutoff
+    asset2_fossil,
+    asset2_tobacco,
+    asset2_gambling,
+    controversy2,
+    apply_exclusions,
+    exclude_fossil,
+    exclude_tobacco,
+    exclude_gambling,
+    exclude_severe_controversy,
+    severe_controversy_cutoff,
 )
 
 # ------------------------------------------------------------
@@ -569,7 +601,6 @@ def get_method_explanation():
         return "Gives slightly more weight to controversy-adjusted sustainability quality."
     return "Adds a premium to sustainability quality to reflect stronger impact preference."
 
-
 # ------------------------------------------------------------
 # Cards
 # ------------------------------------------------------------
@@ -620,28 +651,31 @@ tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(
 # ------------------------------------------------------------
 with tab1:
     st.markdown("## Your Recommended Portfolio Composition")
-    st.caption("Your investment is optimally split between risky assets and a risk-free asset, based on your risk and sustainability preferences.")
+    st.caption(
+        "Your investment is optimally split between risky assets and a risk-free asset, based on your risk and sustainability preferences."
+    )
 
     top1, top2, top3 = st.columns(3)
-    def allocation_block(title, value):
-        return f"""
-        <div style="text-align: center;">
-			<div style="color: #A0A0A0; font-size:16px; margin-bottom:8px;">
-            	{title}
-        	</div>
-        	<div style="color: white; font-size:48px; font-weight:700;">
-            	{value}
-        	</div>
-    	</div>
-    	"""
 
-	top1.markdown(allocation_block(asset1_name, f"{w1_complete * 100:.2f}%"), unsafe_allow_html=True)
-	top2.markdown(allocation_block(asset2_name, f"{w2_complete * 100:.2f}%"), unsafe_allow_html=True)
+    top1.markdown(
+        allocation_block(asset1_name, f"{w1_complete * 100:.2f}%"),
+        unsafe_allow_html=True,
+    )
+    top2.markdown(
+        allocation_block(asset2_name, f"{w2_complete * 100:.2f}%"),
+        unsafe_allow_html=True,
+    )
 
-	if w_rf >= 0:
-    	top3.markdown(allocation_block("Risk-free Asset", f"{w_rf * 100:.2f}%"), unsafe_allow_html=True)
-	else:
-    	top3.markdown(allocation_block("Borrowing", f"{abs(w_rf) * 100:.2f}%"), unsafe_allow_html=True)
+    if w_rf >= 0:
+        top3.markdown(
+            allocation_block("Risk-free Asset", f"{w_rf * 100:.2f}%"),
+            unsafe_allow_html=True,
+        )
+    else:
+        top3.markdown(
+            allocation_block("Borrowing", f"{abs(w_rf) * 100:.2f}%"),
+            unsafe_allow_html=True,
+        )
 
     st.markdown("### Portfolio Snapshot")
 
@@ -662,7 +696,7 @@ with tab1:
         st.markdown(
             f"""
             <div style="{card_style}">
-                <div style="{label_style}">Risk Level</div>
+                <div style="{label_style}">Portfolio Risk (σ)</div>
                 <div style="{value_style}">{sd_complete * 100:.2f}%</div>
             </div>
             """,
@@ -679,7 +713,6 @@ with tab1:
             """,
             unsafe_allow_html=True,
         )
-        
         st.caption("Higher scores reflect stronger sustainability performance based on your selected ESG lens.")
 
     st.markdown("")
@@ -687,7 +720,7 @@ with tab1:
 
     with left_col:
         if allow_leverage and y > 1:
-            st.warning("This recommendation uses BORROWING to increase risky exposure.")
+            st.warning("This recommendation uses borrowing to increase risky exposure.")
         elif np.isclose(w_rf, 0.0):
             st.info("This recommendation is fully invested in the risky assets.")
         elif w_rf > 0:
@@ -705,7 +738,7 @@ with tab1:
         st.write(why_not_alternative())
 
     with right_col:
-        st.markdown("### Your Utility Break Down")
+        st.markdown("### Your Utility Breakdown")
         util1, util2, util3 = st.columns(3)
         util1.metric("Return term", f"{expected_return_component:.4f}")
         util2.metric("Risk penalty", f"-{risk_penalty_component:.4f}")
@@ -723,12 +756,12 @@ with tab1:
             a1, a2 = st.columns(2)
             with a1:
                 st.markdown(f"**{asset1_name}**")
-                st.write(f"- Expected return used: {r1_used * 100:.2f}%")
-                st.write(f"- Sustainability score used: {adj_esg1:.2f}")
+                st.write(f"Expected return used: {r1_used * 100:.2f}%")
+                st.write(f"Sustainability score used: {adj_esg1:.2f}")
             with a2:
                 st.markdown(f"**{asset2_name}**")
-                st.write(f"- Expected return used: {r2_used * 100:.2f}%")
-                st.write(f"- Sustainability score used: {adj_esg2:.2f}")
+                st.write(f"Expected return used: {r2_used * 100:.2f}%")
+                st.write(f"Sustainability score used: {adj_esg2:.2f}")
 
 # ------------------------------------------------------------
 # TAB 2
