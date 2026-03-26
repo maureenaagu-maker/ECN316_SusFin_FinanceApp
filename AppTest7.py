@@ -620,7 +620,9 @@ tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(
 # ------------------------------------------------------------
 with tab1:
     st.subheader("Your Recommended Portfolio")
-    st.caption("Built from your profile, climate settings, sustainability lens and portfolio rules.")
+    st.caption("Your total investment is optimally allocated between risky assets and a risk-free asset, based on your risk and sustainability preferences.")
+
+    st.markdown("### Recommended Allocation Split")
 
     top1, top2, top3 = st.columns(3)
     top1.metric(asset1_name, f"{w1_complete * 100:.2f}%")
