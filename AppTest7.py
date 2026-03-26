@@ -633,11 +633,12 @@ value_style = """
 # ------------------------------------------------------------
 # Tabs
 # ------------------------------------------------------------
-tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(
+tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs(
     [
         "📊 Results",
         "📈 Frontier",
         "🌍 Sustainability Trade-Off",
+        "🎯 ESG–Sharpe Frontier",
         "🧠 Investor Dashboard",
         "🔍 Sensitivity & Feasibility",
         "ℹ️ How It Works",
@@ -991,6 +992,125 @@ with tab3:
 # TAB 4
 # ------------------------------------------------------------
 with tab4:
+    st.subheader("ESG–Sharpe Frontier")
+    st.caption("How stronger sustainability scores relate to reward-to-risk performance across feasible portfolios.")
+
+    fig_esg_sharpe, ax_esg_sharpe = plt.subplots(figsize=(10, 6))
+
+    infeasible_mask = ~feasible
+    feasible_mask = feasible
+
+    if np.any(infeasible_mask):
+        ax_esg_sharpe.scatter(
+            sustainability_scores[infeasible_mask],
+            sharpes[infeasible_mask],
+            s=12,
+            alpha=0.20,
+            label="Infeasible portfolios",
+        )
+
+    scatter_esg_sharpe = ax_esg_sharpe.scatter(
+        sustainability_scores[feasible_mask],
+        sharpes[feasible_mask],
+        c=risks[feasible_mask],
+        cmap="viridis",
+        s=22,
+        alpha=0.95,
+        edgecolors="black",
+        linewidths=0.05,
+        label="Feasible portfolios",
+    )
+
+    ax_esg_sharpe.scatter(
+        adj_esg1,
+        sharpe_ratio(r1_used, sd1, r_free),
+        s=140,
+        marker="o",
+        label=asset1_name,
+        zorder=3,
+    )
+    ax_esg_sharpe.scatter(
+        adj_esg2,
+        sharpe_ratio(r2_used, sd2, r_free),
+        s=140,
+        marker="o",
+        label=asset2_name,
+        zorder=3,
+    )
+    ax_esg_sharpe.scatter(
+        sus_tan,
+        sharpe_tan,
+        s=220,
+        marker="*",
+        label="Maximum-Sharpe portfolio",
+        zorder=5,
+    )
+    ax_esg_sharpe.scatter(
+        sus_complete,
+        sharpe_ratio(ret_complete, sd_complete, r_free),
+        s=170,
+        marker="X",
+        label="Recommended portfolio",
+        zorder=6,
+    )
+
+    ax_esg_sharpe.annotate(
+        "Max-Sharpe",
+        xy=(sus_tan, sharpe_tan),
+        xytext=(sus_tan + 1.0, sharpe_tan + 0.01),
+        fontsize=9,
+    )
+
+    ax_esg_sharpe.annotate(
+        "Recommended",
+        xy=(sus_complete, sharpe_ratio(ret_complete, sd_complete, r_free)),
+        xytext=(sus_complete + 1.0, sharpe_ratio(ret_complete, sd_complete, r_free) - 0.04),
+        fontsize=9,
+    )
+
+    ax_esg_sharpe.set_xlabel("Portfolio sustainability score")
+    ax_esg_sharpe.set_ylabel("Sharpe ratio")
+    ax_esg_sharpe.set_title("Sharpe Ratio vs Sustainability Score")
+    ax_esg_sharpe.grid(True, alpha=0.3)
+    ax_esg_sharpe.legend()
+
+    cbar_esg_sharpe = plt.colorbar(scatter_esg_sharpe, ax=ax_esg_sharpe)
+    cbar_esg_sharpe.set_label("Portfolio risk")
+
+    st.pyplot(fig_esg_sharpe)
+
+    sharpe_complete = sharpe_ratio(ret_complete, sd_complete, r_free)
+    sharpe_cost = sharpe_tan - sharpe_complete
+    esg_gain = sus_complete - sus_tan
+
+    left_compare, right_compare = st.columns(2)
+
+    with left_compare:
+        st.markdown("### Recommended vs Maximum-Sharpe")
+        st.metric("Recommended Sharpe", f"{sharpe_complete:.3f}")
+        st.metric("Recommended ESG score", f"{sus_complete:.2f}")
+
+    with right_compare:
+        st.markdown("### ESG Preference Trade-Off")
+        st.metric("Sharpe ratio cost", f"-{sharpe_cost:.3f}")
+        st.metric("ESG score gain", f"{esg_gain:+.2f}")
+
+    st.markdown(
+        f"""
+        <div class="small-note">
+        This chart makes the ESG trade-off explicit. The maximum-Sharpe portfolio delivers the highest reward-to-risk ratio,
+        while the recommended portfolio may move toward a higher sustainability score when investor utility places additional
+        weight on ESG preference.
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+# ------------------------------------------------------------
+# TAB 5
+# ------------------------------------------------------------
+with tab5:
     st.subheader("Investor Dashboard")
     st.caption("A summary of how the app interprets your preferences.")
 
@@ -1044,9 +1164,9 @@ with tab4:
         st.write(f"**{asset2_name}** climate-adjusted return used: **{r2_used * 100:.2f}%**")
 
 # ------------------------------------------------------------
-# TAB 5
+# TAB 6
 # ------------------------------------------------------------
-with tab5:
+with tab6:
     st.subheader("Sensitivity and Feasibility")
     st.caption("See how the recommendation changes when preferences or portfolio rules shift.")
 
