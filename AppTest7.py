@@ -204,6 +204,8 @@ else:
         f"{persona}\n\nRisk Aversion: {risk_aversion:.1f}\n\nESG Preference: {esg_preference:.3f}"
     )
 
+display_persona = get_profile_from_preferences(risk_aversion, esg_preference) if use_manual_preferences else persona
+
 st.sidebar.header("Sustainability Method")
 esg_method = st.sidebar.selectbox(
     "Choose a sustainability lens",
@@ -303,6 +305,16 @@ climate_weight = st.sidebar.slider(
 # ------------------------------------------------------------
 # Helper functions
 # ------------------------------------------------------------
+def get_profile_from_preferences(risk_aversion, esg_preference):
+    if esg_preference >= 0.055:
+        return "Sustainability-Focused Investor"
+    elif risk_aversion >= 7.0:
+        return "Low-Risk Investor"
+    elif risk_aversion <= 2.5 and esg_preference <= 0.02:
+        return "Return-Seeking Investor"
+    else:
+        return "Balanced Investor"
+
 def portfolio_return(w1, r1_used, r2_used):
     w2 = 1 - w1
     return w1 * r1_used + w2 * r2_used
@@ -890,7 +902,7 @@ with tab4:
             f"""
             <div style="{card_style}">
                 <div style="{label_style}">Investor Style</div>
-                <div style="{value_style}" style="font-size:28px;">{persona}</div>
+                <div style="{value_style}" style="font-size:28px;">{display_persona}</div>
             </div>
             """,
             unsafe_allow_html=True,
@@ -919,7 +931,7 @@ with tab4:
         )
 
     st.markdown("### Profile Interpretation")
-    st.write(persona_descriptions[persona])
+    st.write(persona_descriptions[display_persona])
     st.write(f"Current sustainability lens: **{esg_method}**. {get_method_explanation()}")
 
     lens1, lens2 = st.columns(2)
