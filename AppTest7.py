@@ -711,12 +711,12 @@ with tab1:
             a1, a2 = st.columns(2)
             with a1:
                 st.markdown(f"**{asset1_name}**")
-                st.write(f"Expected return used: {r1_used * 100:.2f}%")
-                st.write(f"Sustainability score used: {adj_esg1:.2f}")
+                st.write(f"- Expected return used: {r1_used * 100:.2f}%")
+                st.write(f"- Sustainability score used: {adj_esg1:.2f}")
             with a2:
                 st.markdown(f"**{asset2_name}**")
-                st.write(f"Expected return used: {r2_used * 100:.2f}%")
-                st.write(f"Sustainability score used: {adj_esg2:.2f}")
+                st.write(f"- Expected return used: {r2_used * 100:.2f}%")
+                st.write(f"- Sustainability score used: {adj_esg2:.2f}")
 
 # ------------------------------------------------------------
 # TAB 2
