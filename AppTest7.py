@@ -1101,6 +1101,8 @@ with tab4:
         This chart makes the ESG trade-off explicit. The maximum-Sharpe portfolio delivers the highest reward-to-risk ratio,
         while the recommended portfolio may move toward a higher sustainability score when investor utility places additional
         weight on ESG preference.
+
+            Higher ESG scores are achievable, but at a cost to Sharpe ratio relative to the maximum-Sharpe portfolio.
         </div>
         """,
         unsafe_allow_html=True,
