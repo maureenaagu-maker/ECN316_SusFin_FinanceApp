@@ -589,10 +589,10 @@ def get_method_explanation():
 card_style = """
     background: rgba(255,255,255,0.04);
     border: 1px solid rgba(255,255,255,0.08);
-    padding: 20px 16px;
+    padding: 14px 20px;
     border-radius: 20px;
     box-shadow: 0 6px 18px rgba(0,0,0,0.18);
-    min-height: 80px;
+    min-height: 70px;
     display: flex;
     flex-direction: column;
     justify-content: center;
