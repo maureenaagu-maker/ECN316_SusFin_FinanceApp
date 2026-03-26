@@ -283,17 +283,17 @@ st.sidebar.header("Portfolio Rules")
 allow_leverage = st.sidebar.checkbox("Allow borrowing to increase investment exposure", value=False)
 
 exclude_low_esg = st.sidebar.checkbox(
-    "Set a minimum sustainability score for the portfolio",
+    "Set a minimum ESG score for the portfolio",
     value=(strict_sustainability == "Yes, avoid lower-ESG portfolios"),
 )
 
 esg_floor = st.sidebar.slider(
-    "Minimum portfolio sustainability score",
+    "Minimum portfolio ESG score",
     min_value=0,
     max_value=100,
     value=50,
     step=1,
-    help="This is the lowest weighted sustainability score your combined portfolio is allowed to have.",
+    help="This is the lowest weighted ESG score your combined portfolio is allowed to have.",
 )
 
 st.sidebar.header("Exclusions")
@@ -577,7 +577,7 @@ def why_not_alternative():
 
     text = (
         f"The maximum-Sharpe portfolio offers an expected return of **{ret_tan * 100:.2f}%**, "
-        f"with risk of **{sd_tan * 100:.2f}%** and sustainability score of **{sus_tan:.2f}**. "
+        f"with risk of **{sd_tan * 100:.2f}%** and ESG score of **{sus_tan:.2f}**. "
         f"Your recommended portfolio instead reflects your utility preferences, so it may accept a lower return or Sharpe ratio in exchange for lower volatility, higher sustainability quality, or both."
     )
 
@@ -591,9 +591,9 @@ def why_not_alternative():
 
 def get_method_explanation():
     if esg_method == "Broad ESG":
-        return "Uses the sustainability score as a broad overall measure."
+        return "Uses the ESG score as a broad overall measure."
     if esg_method == "Climate-Focused":
-        return "Places more emphasis on lower carbon intensity alongside the sustainability score."
+        return "Places more emphasis on lower carbon intensity alongside the ESG score."
     if esg_method == "Exclusions-Focused":
         return "Gives slightly more weight to controversy-adjusted sustainability quality."
     return "Adds a premium to sustainability quality to reflect stronger impact preference."
@@ -850,11 +850,11 @@ with tab1:
             with a1:
                 st.markdown(f"**{asset1_name}**")
                 st.write(f"- Expected return used: {r1_used * 100:.2f}%")
-                st.write(f"- Sustainability score used: {adj_esg1:.2f}")
+                st.write(f"- ESG score used: {adj_esg1:.2f}")
             with a2:
                 st.markdown(f"**{asset2_name}**")
                 st.write(f"- Expected return used: {r2_used * 100:.2f}%")
-                st.write(f"- Sustainability score used: {adj_esg2:.2f}")
+                st.write(f"- ESG score used: {adj_esg2:.2f}")
 
 # ------------------------------------------------------------
 # TAB 2
@@ -902,12 +902,12 @@ with tab2:
 
     ax1.set_xlabel("Risk (standard deviation)")
     ax1.set_ylabel("Expected return")
-    ax1.set_title("Risk-Return Frontier Coloured by Sustainability Score")
+    ax1.set_title("Risk-Return Frontier Coloured by ESG Score")
     ax1.grid(True, alpha=0.3)
     ax1.legend()
 
     cbar1 = plt.colorbar(scatter1, ax=ax1)
-    cbar1.set_label("Portfolio sustainability score")
+    cbar1.set_label("Portfolio ESG score")
 
     st.pyplot(fig1)
 
@@ -965,9 +965,9 @@ with tab3:
         fontsize=9,
     )
 
-    ax2.set_xlabel("Portfolio sustainability score")
+    ax2.set_xlabel("Portfolio ESG score")
     ax2.set_ylabel("Expected return")
-    ax2.set_title("Expected Return vs Sustainability Score")
+    ax2.set_title("Expected Return vs ESG Score")
     ax2.grid(True, alpha=0.3)
     ax2.legend()
 
@@ -993,7 +993,7 @@ with tab3:
 # ------------------------------------------------------------
 with tab4:
     st.subheader("ESG–Sharpe Frontier")
-    st.caption("How stronger sustainability scores relate to reward-to-risk performance across feasible portfolios.")
+    st.caption("How stronger ESG scores relate to reward-to-risk performance across feasible portfolios.")
 
     fig_esg_sharpe, ax_esg_sharpe = plt.subplots(figsize=(10, 6))
 
@@ -1068,9 +1068,9 @@ with tab4:
         fontsize=9,
     )
 
-    ax_esg_sharpe.set_xlabel("Portfolio sustainability score")
+    ax_esg_sharpe.set_xlabel("Portfolio ESG score")
     ax_esg_sharpe.set_ylabel("Sharpe ratio")
-    ax_esg_sharpe.set_title("Sharpe Ratio vs Sustainability Score")
+    ax_esg_sharpe.set_title("Sharpe Ratio vs ESG Score")
     ax_esg_sharpe.grid(True, alpha=0.3)
     ax_esg_sharpe.legend()
 
@@ -1099,7 +1099,7 @@ with tab4:
         f"""
         <div class="small-note">
         This chart makes the ESG trade-off explicit. The maximum-Sharpe portfolio delivers the highest reward-to-risk ratio,
-        while the recommended portfolio may move toward a higher sustainability score when investor utility places additional
+        while the recommended portfolio may move toward a higher ESG score when investor utility places additional
         weight on ESG preference.
 
             Higher ESG scores are achievable, but at a cost to Sharpe ratio relative to the maximum-Sharpe portfolio.
@@ -1158,8 +1158,8 @@ with tab5:
     lens1, lens2 = st.columns(2)
     with lens1:
         st.markdown("### Asset Sustainability View")
-        st.write(f"**{asset1_name}** adjusted sustainability score: **{adj_esg1:.2f}**")
-        st.write(f"**{asset2_name}** adjusted sustainability score: **{adj_esg2:.2f}**")
+        st.write(f"**{asset1_name}** adjusted ESG score: **{adj_esg1:.2f}**")
+        st.write(f"**{asset2_name}** adjusted ESG score: **{adj_esg2:.2f}**")
     with lens2:
         st.markdown("### Climate View")
         st.write(f"**{asset1_name}** climate-adjusted return used: **{r1_used * 100:.2f}%**")
@@ -1177,7 +1177,7 @@ with tab6:
         [
             "ESG Preference",
             "Risk Aversion",
-            "Minimum Sustainability Score",
+            "Minimum ESG Score",
             "Correlation",
         ],
     )
@@ -1206,9 +1206,9 @@ with tab6:
             idx = np.argmax(test_utilities)
             line_vals.append(weights[idx] * 100)
 
-    elif sensitivity_choice == "Minimum Sustainability Score":
+    elif sensitivity_choice == "Minimum ESG Score":
         x_vals = np.arange(0, 101, 2)
-        x_label = "Minimum Sustainability Score"
+        x_label = "Minimum ESG Score"
         line_vals = []
         for x in x_vals:
             test_feasible = feasible.copy()
@@ -1278,7 +1278,7 @@ with tab6:
         origin="lower",
         extent=[floor_grid.min(), floor_grid.max(), risk_grid.min(), risk_grid.max()],
     )
-    ax4.set_xlabel("Minimum sustainability score")
+    ax4.set_xlabel("Minimum ESG score")
     ax4.set_ylabel("Risk aversion")
     ax4.set_title(f"Optimal weight in {asset1_name} across preference combinations")
     cbar4 = plt.colorbar(im, ax=ax4)
