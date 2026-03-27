@@ -1304,9 +1304,9 @@ Where:
 - **E(Rp)** = expected portfolio return  
 - **γ** = Risk aversion parameter  
 - **σp²** = Portfolio variance 
-- **λ** = Strength/intensity of ESG preference
-                          - λ=0: ESG does not matter!
-                          - λ>0: ESG gives positive utility [Invester accepts lower financial return in exchange for higher ESG score]
+- **λ** = Strength/intensity of ESG preference  
+    - λ = 0: ESG does not matter  
+    - λ > 0: ESG gives positive utility (investor accepts lower financial return for higher ESG score)
 - **s** = Weighted average ESG score of the portfolio 
 
 The app then layers in additional sustainable-finance features:
