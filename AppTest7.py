@@ -1286,9 +1286,9 @@ with tab6:
     st.pyplot(fig4)
 
 # ------------------------------------------------------------
-# TAB 6
+# TAB 7
 # ------------------------------------------------------------
-with tab6:
+with tab7:
     st.subheader("How It Works")
 
     st.markdown(
@@ -1320,5 +1320,6 @@ The app then layers in additional sustainable-finance features:
 **Current sustainability lens:** {esg_method}  
 
 The final recommendation is the portfolio that gives the highest utility after all selected rules are applied.
+The ESG–Sharpe frontier and benchmark comparison make the trade-off between sustainability and reward-to-risk performance explicit.
         """
     )
