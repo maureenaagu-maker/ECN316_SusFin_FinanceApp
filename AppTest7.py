@@ -1295,16 +1295,19 @@ with tab7:
         f"""
 This app compares all possible portfolios formed from two risky assets and an optional risk-free asset.
 
-The starting point is the standard mean-variance framework. Portfolio utility is extended so sustainability enters the decision rule directly:
+The starting point is the standard mean-variance framework. Portfolio utility is extended so sustainability (ESG) enters the decision rule directly:
 
-**U = E(Rp) - 0.5 × γ × σp² + δ × Sustainability**
+**U = E(Rp) - 0.5 × γ × σp² + λ × s**
 
 Where:
 
-- **E(Rp)** is expected portfolio return  
-- **γ** is risk aversion  
-- **σp²** is portfolio variance  
-- **δ** is the strength of sustainability preference  
+- **E(Rp)** = expected portfolio return  
+- **γ** = Risk aversion parameter  
+- **σp²** = Portfolio variance 
+- **λ** = Strength/intensity of ESG preference
+                          - λ=0: ESG does not matter!
+                          - λ>0: ESG gives positive utility [Invester accepts lower financial return in exchange for higher ESG score]
+- **s** = Weighted average ESG score of the portfolio 
 
 The app then layers in additional sustainable-finance features:
 
