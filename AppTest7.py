@@ -649,7 +649,7 @@ tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs(
 # TAB 1
 # ------------------------------------------------------------
 with tab1:
-    st.markdown("## Your Recommended Portfolio Composition")
+    st.markdown("## Your **Recommended** Portfolio Composition")
     st.caption("Your investment is optimally split between risky assets and a risk-free asset, based on your risk and sustainability preferences.")
 
     composition_left, composition_right = st.columns([2.2, 1.0], gap="large")
