@@ -1297,7 +1297,8 @@ This app compares all possible portfolios formed from two risky assets and an op
 
 The starting point is the standard mean-variance framework. Portfolio utility is extended so sustainability (ESG) enters the decision rule directly:
 
-**U = E(Rp) - 0.5 × γ × σp² + λ × s**
+st.latex(r"U = E(R_p) - 0.5 \gamma \sigma_p^2 + \lambda s")
+
 
 Where:
 
