@@ -1301,7 +1301,8 @@ The starting point is the standard mean-variance framework. Portfolio utility is
 
 Where:
 
-- **E(Rp)** = expected portfolio return  
+- **U** = Investor utility/satisfaction  
+- **E(Rp)** = Expected portfolio return  
 - **γ** = Risk aversion parameter  
 - **σp²** = Portfolio variance 
 - **λ** = Strength/intensity of ESG preference  
