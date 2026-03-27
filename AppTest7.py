@@ -1299,13 +1299,13 @@ with tab7:
         f"""
 Where:
 
-- **E(Rp)** is expected portfolio return  
-- **γ** is risk aversion  
-- **σp²** is portfolio variance  
-- **λ** = Strength/intensity of ESG preference  
+- **E(Rp)** is the expected portfolio return  
+- **γ** is the risk aversion parameter 
+- **σp²** is the portfolio variance  
+- **λ** is the strength/intensity of ESG preference  
     - λ = 0: ESG does not matter  
     - λ > 0: ESG gives positive utility (investor accepts lower financial return for higher ESG score)  
-- **s** = Weighted average ESG score of the portfolio  
+- **s** is the weighted average ESG score of the portfolio  
 
 The app then layers in additional sustainable-finance features:
 
