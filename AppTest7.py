@@ -1291,25 +1291,21 @@ with tab6:
 with tab7:
     st.subheader("How It Works")
 
+    st.markdown("The starting point is the standard mean-variance framework. Portfolio utility is extended so sustainability (ESG) enters the decision rule directly:")
+
+    st.latex(r"U = E(R_p) - 0.5 \gamma \sigma_p^2 + \lambda s")
+
     st.markdown(
         f"""
-This app compares all possible portfolios formed from two risky assets and an optional risk-free asset.
-
-The starting point is the standard mean-variance framework. Portfolio utility is extended so sustainability (ESG) enters the decision rule directly:
-
-st.latex(r"U = E(R_p) - 0.5 \gamma \sigma_p^2 + \lambda s")
-
-
 Where:
 
-- **U** = Investor utility/satisfaction  
-- **E(Rp)** = Expected portfolio return  
-- **γ** = Risk aversion parameter  
-- **σp²** = Portfolio variance 
+- **E(Rp)** is expected portfolio return  
+- **γ** is risk aversion  
+- **σp²** is portfolio variance  
 - **λ** = Strength/intensity of ESG preference  
     - λ = 0: ESG does not matter  
-    - λ > 0: ESG gives positive utility (investor accepts lower financial return for higher ESG score)
-- **s** = Weighted average ESG score of the portfolio 
+    - λ > 0: ESG gives positive utility (investor accepts lower financial return for higher ESG score)  
+- **s** = Weighted average ESG score of the portfolio  
 
 The app then layers in additional sustainable-finance features:
 
@@ -1317,7 +1313,7 @@ The app then layers in additional sustainable-finance features:
 - **Controversy penalty** reduces scores for assets with weaker controversy profiles  
 - **Climate overlay** can reduce expected return for assets with higher physical risk, transition risk and carbon intensity  
 - **Exclusion screen** removes assets that fail ethical or controversy rules  
-- **Minimum sustainability rule** removes portfolio mixes below your chosen threshold  
+- **Minimum ESG rule** removes portfolio mixes below your chosen threshold  
 
 **Your current investor type:** {display_persona}  
 **Current risk aversion:** {risk_aversion:.1f}  
@@ -1325,6 +1321,7 @@ The app then layers in additional sustainable-finance features:
 **Current sustainability lens:** {esg_method}  
 
 The final recommendation is the portfolio that gives the highest utility after all selected rules are applied.
+
 The ESG–Sharpe frontier and benchmark comparison make the trade-off between sustainability and reward-to-risk performance explicit.
         """
     )
