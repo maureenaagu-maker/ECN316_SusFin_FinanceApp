@@ -633,14 +633,13 @@ value_style = """
 # ------------------------------------------------------------
 # Tabs
 # ------------------------------------------------------------
-tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs(
+tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(
     [
         "📊 Results",
         "📈 Frontier",
         "🌍 Sustainability Trade-Off",
         "🎯 ESG–Sharpe Frontier",
         "🧠 Investor Dashboard",
-        "🔍 Sensitivity & Feasibility",
         "ℹ️ How It Works",
     ]
 )
@@ -1169,126 +1168,6 @@ with tab5:
 # TAB 6
 # ------------------------------------------------------------
 with tab6:
-    st.subheader("Sensitivity and Feasibility")
-    st.caption("See how the recommendation changes when preferences or portfolio rules shift.")
-
-    sensitivity_choice = st.selectbox(
-        "Stress-test one input",
-        [
-            "ESG Preference",
-            "Risk Aversion",
-            "Minimum ESG Score",
-            "Correlation",
-        ],
-    )
-
-    if sensitivity_choice == "ESG Preference":
-        x_vals = np.linspace(0.0, 0.12, 60)
-        x_label = "ESG Preference"
-        line_vals = []
-        for x in x_vals:
-            test_utilities = np.array(
-                [utility(ret, sd, sus, risk_aversion, x) for ret, sd, sus in zip(returns, risks, sustainability_scores)]
-            )
-            test_utilities = np.where(feasible, test_utilities, -np.inf)
-            idx = np.argmax(test_utilities)
-            line_vals.append(weights[idx] * 100)
-
-    elif sensitivity_choice == "Risk Aversion":
-        x_vals = np.linspace(0.5, 10.0, 60)
-        x_label = "Risk Aversion"
-        line_vals = []
-        for x in x_vals:
-            test_utilities = np.array(
-                [utility(ret, sd, sus, x, esg_preference) for ret, sd, sus in zip(returns, risks, sustainability_scores)]
-            )
-            test_utilities = np.where(feasible, test_utilities, -np.inf)
-            idx = np.argmax(test_utilities)
-            line_vals.append(weights[idx] * 100)
-
-    elif sensitivity_choice == "Minimum ESG Score":
-        x_vals = np.arange(0, 101, 2)
-        x_label = "Minimum ESG Score"
-        line_vals = []
-        for x in x_vals:
-            test_feasible = feasible.copy()
-            test_feasible &= sustainability_scores >= x
-            if np.any(test_feasible):
-                test_utilities = np.array(
-                    [utility(ret, sd, sus, risk_aversion, esg_preference) for ret, sd, sus in zip(returns, risks, sustainability_scores)]
-                )
-                test_utilities = np.where(test_feasible, test_utilities, -np.inf)
-                idx = np.argmax(test_utilities)
-                line_vals.append(weights[idx] * 100)
-            else:
-                line_vals.append(np.nan)
-
-    else:
-        x_vals = np.linspace(-1.0, 1.0, 60)
-        x_label = "Correlation"
-        line_vals = []
-        for x in x_vals:
-            test_risks = np.array([portfolio_sd(w, sd1, sd2, x) for w in weights])
-            test_utilities = np.array(
-                [utility(ret, sd, sus, risk_aversion, esg_preference) for ret, sd, sus in zip(returns, test_risks, sustainability_scores)]
-            )
-            test_utilities = np.where(feasible, test_utilities, -np.inf)
-            idx = np.argmax(test_utilities)
-            line_vals.append(weights[idx] * 100)
-
-    fig3, ax3 = plt.subplots(figsize=(10, 5))
-    ax3.plot(x_vals, line_vals, linewidth=1.4)
-    ax3.set_xlabel(x_label)
-    ax3.set_ylabel(f"Optimal weight in {asset1_name} (%)")
-    ax3.set_title(f"Sensitivity of Recommended Risky Mix to {sensitivity_choice}")
-    ax3.grid(True, alpha=0.3)
-    st.pyplot(fig3)
-
-    st.markdown("### Feasibility Heatmap")
-
-    risk_grid = np.linspace(1.0, 9.0, 18)
-    floor_grid = np.linspace(0, 100, 21)
-    heatmap = np.zeros((len(risk_grid), len(floor_grid)))
-
-    base_constraint_mask = np.ones_like(weights, dtype=bool)
-    if asset1_excluded and asset2_excluded:
-        base_constraint_mask &= False
-    elif asset1_excluded:
-        base_constraint_mask &= weights <= 0
-    elif asset2_excluded:
-        base_constraint_mask &= weights >= 1
-
-    for i, ra in enumerate(risk_grid):
-        for j, floor in enumerate(floor_grid):
-            test_feasible = base_constraint_mask & (sustainability_scores >= floor)
-            if np.any(test_feasible):
-                test_utilities = np.array(
-                    [utility(ret, sd, sus, ra, esg_preference) for ret, sd, sus in zip(returns, risks, sustainability_scores)]
-                )
-                test_utilities = np.where(test_feasible, test_utilities, -np.inf)
-                idx = np.argmax(test_utilities)
-                heatmap[i, j] = weights[idx] * 100
-            else:
-                heatmap[i, j] = np.nan
-
-    fig4, ax4 = plt.subplots(figsize=(10, 5))
-    im = ax4.imshow(
-        heatmap,
-        aspect="auto",
-        origin="lower",
-        extent=[floor_grid.min(), floor_grid.max(), risk_grid.min(), risk_grid.max()],
-    )
-    ax4.set_xlabel("Minimum ESG score")
-    ax4.set_ylabel("Risk aversion")
-    ax4.set_title(f"Optimal weight in {asset1_name} across preference combinations")
-    cbar4 = plt.colorbar(im, ax=ax4)
-    cbar4.set_label(f"Optimal weight in {asset1_name} (%)")
-    st.pyplot(fig4)
-
-# ------------------------------------------------------------
-# TAB 7
-# ------------------------------------------------------------
-with tab7:
     st.subheader("How It Works")
 
     st.markdown("The starting point is the standard mean-variance framework. Portfolio utility is extended so sustainability (ESG) enters the decision rule directly:")
