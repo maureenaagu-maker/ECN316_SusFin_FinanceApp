@@ -378,6 +378,24 @@ def utility(ret, sd, sustainability_score, risk_aversion_used, esg_preference_us
     return ret - 0.5 * risk_aversion_used * (sd**2) + esg_preference_used * (sustainability_score / 100)
 
 
+def portfolio_utility(ret, sd, sustainability_score, risk_aversion_used, esg_preference_used):
+    return ret - 0.5 * risk_aversion_used * (sd ** 2) + esg_preference_used * (sustainability_score / 100)
+
+
+def utility_curve_return(sd_values, utility_level, risk_aversion_used, esg_preference_used, sustainability_score_fixed):
+    """
+    Return values for an indifference curve in risk-return space.
+
+    ESG is held fixed at the sustainability score of the reference risky portfolio.
+    This is consistent with plotting a dynamic utility curve through one chosen point.
+    """
+    return (
+        utility_level
+        + 0.5 * risk_aversion_used * (sd_values ** 2)
+        - esg_preference_used * (sustainability_score_fixed / 100)
+    )
+
+
 def asset_is_excluded(
     fossil_flag, tobacco_flag, gambling_flag, controversy_score,
     apply_screen, fossil_rule, tobacco_rule, gambling_rule, controversy_rule, controversy_cutoff
@@ -502,7 +520,13 @@ w2_opt_risky = 1 - w1_opt_risky
 ret_opt_risky = returns[optimal_idx]
 sd_opt_risky = risks[optimal_idx]
 sus_opt_risky = sustainability_scores[optimal_idx]
-u_opt_risky = utilities[optimal_idx]
+u_opt_risky = portfolio_utility(
+    ret_opt_risky,
+    sd_opt_risky,
+    sus_opt_risky,
+    risk_aversion,
+    esg_preference
+)
 
 # ------------------------------------------------------------
 # Final recommended portfolio with risk-free asset
@@ -767,7 +791,6 @@ with tab1:
         if w_rf < 0:
             st.caption("Borrowing is not displayed in the composition chart.")
 
-    
     st.markdown("### Portfolio Snapshot")
 
     snap1, snap2, snap3 = st.columns(3)
@@ -897,7 +920,27 @@ with tab2:
     sd_line = np.linspace(0, max(risks) * 1.15, 100)
     if sd_opt_risky > 0:
         ret_line = r_free + ((ret_opt_risky - r_free) / sd_opt_risky) * sd_line
-        ax1.plot(sd_line, ret_line, linestyle="--", linewidth=1.0, label="Capital Market Line", zorder=1)
+        ax1.plot(sd_line, ret_line, linestyle="--", linewidth=1.0, label="Capital allocation line", zorder=1)
+
+    # Dynamic investor indifference curve through the recommended risky portfolio
+    sd_curve = np.linspace(0, max(risks) * 1.15, 400)
+    ret_curve = utility_curve_return(
+        sd_curve,
+        u_opt_risky,
+        risk_aversion,
+        esg_preference,
+        sus_opt_risky
+    )
+
+    ax1.plot(
+        sd_curve,
+        ret_curve,
+        linestyle=":",
+        linewidth=2.5,
+        color="purple",
+        label="Utility curve",
+        zorder=2
+    )
 
     ax1.set_xlabel("Risk (standard deviation)")
     ax1.set_ylabel("Expected return")
@@ -915,7 +958,6 @@ with tab2:
         <div class="small-note">
         Feasible portfolios satisfy all active rules. Grey points fail at least one condition.
         Current sustainability lens: <b>{esg_method}</b>. {get_method_explanation()}
-        The dotted purple line is an illustrative utility curve through the recommended portfolio.
         </div>
         """,
         unsafe_allow_html=True,
@@ -1107,7 +1149,6 @@ with tab4:
         """,
         unsafe_allow_html=True,
     )
-
 
 # ------------------------------------------------------------
 # TAB 5
